@@ -58,6 +58,7 @@ public class RetryConsumer<T extends RetryHandler<DelayedQueue<RetryEvent>>>
             if (e instanceof EntityNotRegisteredException) {
                 LOG.warn("Entity {} of type {} doesn't exist in config store. So retry "
                         + "cannot be done for workflow ", entityName, entityType, message.getWfId());
+                return;
             }
             int maxFailRetryCount = Integer.parseInt(StartupProperties.get()
                     .getProperty("max.retry.failure.count", "1"));
