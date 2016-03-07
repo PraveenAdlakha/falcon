@@ -1301,14 +1301,13 @@ public class OozieWorkflowEngine extends AbstractWorkflowEngine {
         for (CoordinatorJob coord : bundle.getCoordinators()) {
 
             Frequency delay = null;
+
             //get Delay to calculate coordinator end time in case of feed replication with delay.
             if (entity.getEntityType().equals(EntityType.FEED)) {
                 delay = getDelay((Feed) entity, coord);
             }
 
-            //calculate next start time based on delay.
-            endTime = (delay == null) ? endTime
-                    : EntityUtil.getNextStartTime(coord.getStartTime(), delay, EntityUtil.getTimeZone(entity), endTime);
+            endTime = getDelayEndTime(endTime, delay, EntityUtil.getTimeZone(coord.getTimeZone()));
             LOG.debug("Updating endtime of coord {} to {} on cluster {}",
                     coord.getId(), SchemaHelper.formatDateUTC(endTime), cluster);
 
@@ -1337,7 +1336,18 @@ public class OozieWorkflowEngine extends AbstractWorkflowEngine {
         }
     }
 
-    private Frequency getDelay(Feed entity, CoordinatorJob coord) {
+    public static Date getDelayEndTime(Date endTime, Frequency delay, TimeZone timeZone) {
+        //calculate end time based on delay only for feed with delay.
+        if (delay != null) {
+            Calendar delayTime = Calendar.getInstance(timeZone);
+            delayTime.setTime(endTime);
+            delayTime.add(delay.getTimeUnit().getCalendarUnit(), delay.getFrequencyAsInt());
+            endTime = delayTime.getTime();
+        }
+        return endTime;
+    }
+
+    public static Frequency getDelay(Feed entity, CoordinatorJob coord) {
         Feed feed = entity;
         for (org.apache.falcon.entity.v0.feed.Cluster entityCluster : feed.getClusters().getClusters()){
             if (coord.getAppName().contains(entityCluster.getName()) && coord.getAppName().contains("REPLICATION")

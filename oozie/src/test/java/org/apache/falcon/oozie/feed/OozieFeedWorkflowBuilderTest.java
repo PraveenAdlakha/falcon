@@ -57,6 +57,7 @@ import org.apache.falcon.util.RuntimeProperties;
 import org.apache.falcon.util.StartupProperties;
 import org.apache.falcon.workflow.WorkflowExecutionArgs;
 import org.apache.falcon.workflow.WorkflowExecutionContext;
+import org.apache.falcon.workflow.engine.OozieWorkflowEngine;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -70,6 +71,7 @@ import org.testng.annotations.Test;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -169,6 +171,27 @@ public class OozieFeedWorkflowBuilderTest extends AbstractTestBase {
             {"false", "2099-01-01T02:00Z"},
             {"true", "2099-01-01T00:00Z"},
         };
+    }
+
+    @Test
+    public void testDelayInFeedUpdates() throws Exception {
+        OozieEntityBuilder builder = OozieEntityBuilder.get(feed);
+        Path bundlePath = new Path("/projects/falcon/");
+        builder.build(trgCluster, bundlePath);
+        BUNDLEAPP bundle = getBundle(trgMiniDFS.getFileSystem(), bundlePath);
+        List<COORDINATOR> coords = bundle.getCoordinator();
+
+        //Assert replication coord
+        COORDINATORAPP coord = getCoordinator(trgMiniDFS, coords.get(1).getAppPath());
+        Assert.assertEquals("2010-01-01T00:40Z", coord.getStart());
+
+        Frequency delay = new Frequency("hours(6)");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-hh");
+        Date endTime = format.parse("2015-03-07-00");
+        Date effectiveEndTime = OozieWorkflowEngine.getDelayEndTime(endTime, delay,
+                EntityUtil.getTimeZone(coord.getTimezone()));
+        Date expectedDate = format.parse("2015-03-07-06");
+        Assert.assertEquals(effectiveEndTime, expectedDate);
     }
 
     @Test(dataProvider = "keepInstancesPostValidity")
