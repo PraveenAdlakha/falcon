@@ -1281,9 +1281,13 @@ public class OozieWorkflowEngine extends AbstractWorkflowEngine {
                 delay = getDelay((Feed) entity, coord);
             }
 
-            //calculate next start time based on delay.
-            endTime = (delay == null) ? endTime
-                    : EntityUtil.getNextStartTime(coord.getStartTime(), delay, EntityUtil.getTimeZone(entity), endTime);
+            //calculate end time based on delay only for feed with delay.
+            if (delay != null) {
+                Calendar delayTime = Calendar.getInstance(EntityUtil.getTimeZone(coord.getTimeZone()));
+                delayTime.setTime(endTime);
+                delayTime.add(delay.getTimeUnit().getCalendarUnit(), delay.getFrequencyAsInt());
+                endTime = delayTime.getTime();
+            }
             LOG.debug("Updating endtime of coord {} to {} on cluster {}",
                     coord.getId(), SchemaHelper.formatDateUTC(endTime), cluster);
 
