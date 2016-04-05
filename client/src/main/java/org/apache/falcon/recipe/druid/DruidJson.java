@@ -1,8 +1,7 @@
 package org.apache.falcon.recipe.druid;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -14,63 +13,23 @@ import com.sun.xml.bind.v2.runtime.output.SAXOutput;
  */
 public class DruidJson
 {
-    private TuningConfig tuningConfig;
-
-    private IoConfig ioConfig;
-
-    private DataSchema dataSchema;
-
-    public TuningConfig getTuningConfig ()
-    {
-        return tuningConfig;
-    }
-
-    public void setTuningConfig (TuningConfig tuningConfig)
-    {
-        this.tuningConfig = tuningConfig;
-    }
-
-    public IoConfig getIoConfig ()
-    {
-        return ioConfig;
-    }
-
-    public void setIoConfig (IoConfig ioConfig)
-    {
-        this.ioConfig = ioConfig;
-    }
-
-    public DataSchema getDataSchema ()
-    {
-        return dataSchema;
-    }
-
-    public void setDataSchema (DataSchema dataSchema)
-    {
-        this.dataSchema = dataSchema;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "ClassPojo [tuningConfig = "+tuningConfig+", ioConfig = "+ioConfig+", dataSchema = "+dataSchema+"]";
-    }
+    private String day1="2016-01-01";
+    private String day2 = "2016-02-01";
+    private String dataSource = "testUser";
+    private String ingestDir = "get this value";
+    private String queueName = "default";
+    private String segmentOutputPath = ingestDir + "/ingest/" + day1 +"_"+ day2 + "/" + dataSource + "/";
+    private String workingPath = ingestDir + "/ingest/" + day1 +"_"+ day2 ;
+    private String hdpVersion = "1.0.6";
+    private String inputPaths = "get this value";
+    private String userName = "testUser";
+    private String mysqlUser = "mysql";
+    private String mysqlPassword = "password";
 
 
-    public static void main(String[] args) throws IOException {
+
+    public void replaceVariableInJson() throws IOException {
         Gson gson = new GsonBuilder().create();
-        String day1="2016-01-01";
-        String day2 = "2016-02-01";
-        String dataSource = "testUser";
-        String ingestDir = "get this value";
-        String queueName = "default";
-        String segmentOutputPath = ingestDir + "/ingest/" + day1 +"_"+ day2 + "/" + dataSource + "/";
-        String workingPath = ingestDir + "/ingest/" + day1 +"_"+ day2 ;
-        String hdpVersion = "1.0.6";
-        String inputPaths = "get this value";
-        String userName = "testUser";
-        String mysqlUser = "mysql";
-        String mysqlPassword = "password";
 
 
         try(Reader reader = new InputStreamReader(DruidJson.class.getClassLoader().getResourceAsStream("hadoop_spec.json"), "UTF-8")){
@@ -85,9 +44,14 @@ public class DruidJson
             String json1=json.replaceAll("\\$day1",day1).replaceAll("\\$day2",day2).
                     replaceAll("\\$dataSource",dataSource).replaceAll("\\$queueName",queueName).
                     replaceAll("\\$userName",userName).replaceAll("\\$ingestDir",ingestDir).replaceAll("\\$mysqlUser",mysqlUser)
-                    .replaceAll("\\$mysqlPassword",mysqlPassword).replaceAll("$inputPaths",inputPaths);
+                    .replaceAll("\\$mysqlPassword",mysqlPassword).replaceAll("\\$inputPaths",inputPaths);
 
             System.out.println(json1);
+
+            try (Writer writer = new FileWriter("Output.json")) {
+                Gson gson2 = new GsonBuilder().create();
+                gson2.toJson(json1, writer);
+            }
 
 
 
@@ -112,5 +76,10 @@ public class DruidJson
 //            //DruidJson p = gson.fromJson(reader, DruidJson.class);
             //System.out.println(p);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        DruidJson druidJson = new DruidJson();
+        druidJson.replaceVariableInJson();
     }
 }
