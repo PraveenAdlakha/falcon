@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<workflow-app xmlns="uri:oozie:workflow:0.1" name="inventory-sizing-wf">
+    <start to="upload-spec"/>
+    <action name="upload-spec">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapred.job.priority</name>
+                    <value>${jobPriority}</value>
+                </property>
+                <property>
+                    <name>HADOOP_USER_NAME</name>
+                    <value>praveen.adlakha</value>
+                </property>
+                <property>
+                    <name>oozie.launcher.mapred.job.priority</name>
+                    <value>${jobPriority}</value>
+                </property>
+            </configuration>
+            <main-class>
+                org.apache.falcon.recipe.druid.DruidJson
+            </main-class>
+            <arg>${interval1}</arg>
+            <arg>${interval2}</arg>
+            <arg>${dataSource}</arg>
+            <arg>${ingestDir}</arg>
+            <arg>${queueName}</arg>
+            <arg>${inputPath}</arg>
+            <arg>${hdfsUser}</arg>
+            <arg>${mysqlUser}</arg>
+            <arg>${mysqlPass}</arg>
+            <arg>${tmpDir}</arg>
+            <arg>${jobDir}/conf</arg>
+
+            <arg>${jobDir}/conf</arg>
+            <arg>${specFile}</arg>
+            <arg>${specPropertiesFile}</arg>
+
+            <arg>${date}</arg>
+
+            <arg>${jobDir}</arg>
+
+        </java>
+        <ok to="load-to-druid"/>
+        <error to="fail"/>
+    </action>
+    <action name="load-to-druid">
+        <java>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <configuration>
+                <property>
+                    <name>mapred.job.queue.name</name>
+                    <value>${queueName}</value>
+                </property>
+                <property>
+                    <name>mapred.job.priority</name>
+                    <value>${jobPriority}</value>
+                </property>
+                <property>
+                    <name>HADOOP_USER_NAME</name>
+                    <value>praveen.adlakha</value>
+                </property>
+                <property>
+                    <name>oozie.launcher.mapred.job.priority</name>
+                    <value>${jobPriority}</value>
+                </property>
+            </configuration>
+            <main-class>
+                io.druid.cli.Main
+            </main-class>
+            <java-opts>-Xmx256m -XX:MaxMetaspaceSize=128m -DHADOOP_USER_NAME=praveen.adlakha</java-opts>
+            <arg>index</arg>
+            <arg>hadoop</arg>
+            <arg>--no-default-hadoop</arg>
+            <arg>hdfs://${jobDir}/spec/${date}/hadoop_spec.json</arg>
+        </java>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Inventory sizing job has failed to run, error
+            message[${wf:errorMessage(wf:lastErrorNode())}]
+        </message>
+    </kill>
+    <end name="end" />
+</workflow-app>

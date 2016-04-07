@@ -96,7 +96,8 @@ public class FalconCLI {
      */
     public enum RecipeOperation {
         HDFS_REPLICATION,
-        HIVE_DISASTER_RECOVERY
+        HIVE_DISASTER_RECOVERY,
+        DRUID_LOADER
     }
 
     /**

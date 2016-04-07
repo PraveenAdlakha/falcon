@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<process name="##falcon.recipe.druid.process.name##" xmlns="uri:falcon:process:0.1">
+    <clusters>
+        <cluster name="##falcon.recipe.druid.cluster.name##">
+            <validity start="##falcon.recipe.druid.cluster.validity.start##" end="##falcon.recipe.druid.cluster.validity.end##"/>
+        </cluster>
+    </clusters>
+    <parallel>1</parallel>
+    <order>FIFO</order>
+    <timeout>days(1)</timeout>
+    <frequency>##falcon.recipe.druid.cluster.frequency##</frequency>
+    <timezone>UTC</timezone>
+    <inputs>
+        <input name="inputPath" feed="##falcon.recipe.druid.input.feed##" start="##falcon.recipe.druid.input.feed.start##" end="##falcon.recipe.druid.input.feed.end##"/>
+    </inputs>
+    <properties>
+        <property name="interval1" value="##falcon.recipe.druid.interval1##"/>
+        <property name="interval2" value="##falcon.recipe.druid.interval2##"/>
+        <property name="queueName" value="##falcon.recipe.druid.queuename##"/>
+        <property name="jobPriority" value="LOW"/>
+        <property name="date" value="##falcon.recipe.druid.date##"/>
+        <property name="jobDir" value="##falcon.recipe.druid.jobDir##"/>
+        <property name="tmpDir" value="##falcon.recipe.druid.tmp.dir##"/>
+        <property name="uploadSpecScript" value="invsizing_spec_uploader.sh"/>
+        <property name="specFile" value="hadoop_spec.json"/>
+        <property name="specPropertiesFile" value="hadoop_spec.properties"/>
+        <property name="hdfsUser" value="##falcon.recipe.druid.username##"/>
+        <property name="dataSource" value="##falcon.recipe.druid.dataSource##"/>
+        <property name="ingestDir" value="##falcon.recipe.druid.ingestDir##"/>
+        <property name="queueName" value="##falcon.recipe.druid.queuename##"/>
+        <property name="mysqlUser" value="##falcon.recipe.druid.mysql.username##"/>
+        <property name="mysqlPass" value="##falcon.recipe.druid.mysql.password##"/>
+    </properties>
+    <workflow name="##falcon.recipe.workflow.name##" path="/user/praveen.adlakha/druid/falcon/invsizing-loader-workflow.xml" lib="/user/praveen.adlakha/druid/lib"/>
+    <retry policy="periodic" delay="minutes(15)" attempts="3"/>
+    <ACL owner="dataload" group="users"/>
+</process>

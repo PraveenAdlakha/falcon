@@ -37,6 +37,8 @@ public final class RecipeFactory {
             return new HdfsReplicationRecipeTool();
         } else if (RecipeOperation.HIVE_DISASTER_RECOVERY.toString().equalsIgnoreCase(recipeType)) {
             return new HiveReplicationRecipeTool();
+        }else if (RecipeOperation.DRUID_LOADER.toString().equalsIgnoreCase(recipeType)){
+            return new DruidLoaderRecipeTool();
         }
         return null;
     }
