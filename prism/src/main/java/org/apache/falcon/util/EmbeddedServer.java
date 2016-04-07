@@ -19,15 +19,19 @@
 package org.apache.falcon.util;
 
 import org.apache.falcon.service.Services;
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.bio.SocketConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.ConnectionFactory;
+
 
 /**
  * This class embeds a Jetty server and a connector.
  */
 public class EmbeddedServer {
+
+    Server jettyServer = new Server();
     protected final Server server = new Server();
 
     public EmbeddedServer(int port, String path) {
@@ -39,6 +43,7 @@ public class EmbeddedServer {
     }
 
     protected Connector getConnector(int port) {
+        Connector connector = new
         Connector connector = new SocketConnector();
         connector.setPort(port);
         connector.setHost("0.0.0.0");
@@ -46,8 +51,8 @@ public class EmbeddedServer {
         // this is to enable large header sizes when Kerberos is enabled with AD
         final Integer bufferSize = Integer.valueOf(StartupProperties.get().getProperty(
                 "falcon.jetty.request.buffer.size", "16192"));
-        connector.setHeaderBufferSize(bufferSize);
         connector.setRequestBufferSize(bufferSize);
+        connector.setResponseHeaderSize(bufferSize);
 
         return connector;
     }
