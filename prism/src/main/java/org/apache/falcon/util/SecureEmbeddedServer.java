@@ -18,8 +18,14 @@
 
 package org.apache.falcon.util;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.security.SslSocketConnector;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+
 
 import java.util.Properties;
 
@@ -34,26 +40,58 @@ public class SecureEmbeddedServer extends EmbeddedServer {
 
     protected Connector getConnector(int port) {
         Properties properties = StartupProperties.get();
-        SslSocketConnector connector = new SslSocketConnector();
-        connector.setPort(port);
-        connector.setHost("0.0.0.0");
-        connector.setKeystore(properties.getProperty("keystore.file",
+        SslContextFactory sslContextFactory = new SslContextFactory();
+        sslContextFactory.setKeyStorePath(properties.getProperty("keystore.file",
                 System.getProperty("keystore.file", "conf/prism.keystore")));
-        connector.setKeyPassword(properties.getProperty("keystore.password",
+        sslContextFactory.setKeyStorePassword(properties.getProperty("keystore.password",
                 System.getProperty("keystore.password", "falcon-prism-passwd")));
-        connector.setTruststore(properties.getProperty("truststore.file",
+        sslContextFactory.setTrustStore(properties.getProperty("truststore.file",
                 System.getProperty("truststore.file", "conf/prism.keystore")));
-        connector.setTrustPassword(properties.getProperty("truststore.password",
+        sslContextFactory.setTrustStorePassword(properties.getProperty("truststore.password",
                 System.getProperty("truststore.password", "falcon-prism-passwd")));
-        connector.setPassword(properties.getProperty("password",
-                System.getProperty("password", "falcon-prism-passwd")));
-        connector.setWantClientAuth(true);
 
-        // this is to enable large header sizes when Kerberos is enabled with AD
+
+        sslContextFactory.setKeyManagerPassword(properties.getProperty("password",
+                System.getProperty("password", "falcon-prism-passwd")));
+        sslContextFactory.setWantClientAuth(true);
+
+        HttpConfiguration http_config = new HttpConfiguration();
+        http_config.setSecureScheme("https");
+//        http_config.setSecurePort(8443);
+        http_config.setOutputBufferSize(32768);
         final Integer bufferSize = Integer.valueOf(StartupProperties.get().getProperty(
                 "falcon.jetty.request.buffer.size", "16192"));
-        connector.setHeaderBufferSize(bufferSize);
-        connector.setRequestBufferSize(bufferSize);
+        http_config.setResponseHeaderSize(bufferSize);
+        http_config.setRequestHeaderSize(bufferSize);
+
+        HttpConfiguration https_config = new HttpConfiguration(http_config);
+        https_config.addCustomizer(new SecureRequestCustomizer());
+
+        ServerConnector connector = new ServerConnector(server,new SslConnectionFactory(sslContextFactory,"http/1.1"),
+                new HttpConnectionFactory(https_config));
+        connector.setPort(port);
+
+
+
+//        SslSocketConnector connector = new SslSocketConnector();
+//        connector.setPort(port);
+//        connector.setHost("0.0.0.0");
+//        connector.setKeystore(properties.getProperty("keystore.file",
+//                System.getProperty("keystore.file", "conf/prism.keystore")));
+//        connector.setKeyPassword(properties.getProperty("keystore.password",
+//                System.getProperty("keystore.password", "falcon-prism-passwd")));
+//        connector.setTruststore(properties.getProperty("truststore.file",
+//                System.getProperty("truststore.file", "conf/prism.keystore")));
+//        connector.setTrustPassword(properties.getProperty("truststore.password",
+//                System.getProperty("truststore.password", "falcon-prism-passwd")));
+//        connector.setPassword(properties.getProperty("password",
+//                System.getProperty("password", "falcon-prism-passwd")));
+//        connector.setWantClientAuth(true);
+
+        // this is to enable large header sizes when Kerberos is enabled with AD
+//
+//        connector.setHeaderBufferSize(bufferSize);
+//        connector.setRequestBufferSize(bufferSize);
 
         return connector;
     }

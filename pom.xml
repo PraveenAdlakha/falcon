@@ -713,9 +713,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.eclipse.jetty.aggregate</groupId>
-                <artifactId>jetty-all</artifactId>
-                <version>9.0.4.v20130625</version>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-server</artifactId>
+                <version>9.3.0.v20150612</version>
             </dependency>
 
 
