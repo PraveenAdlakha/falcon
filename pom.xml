@@ -207,7 +207,23 @@
                         <classifier>tests</classifier>
                         <scope>test</scope>
                     </dependency>
+                    <dependency>
+                        <groupId>com.codahale.metrics</groupId>
+                        <artifactId>metrics-core</artifactId>
+                        <version>3.0.2</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.acplt</groupId>
+                                <artifactId>oncrpc</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
 
+                    <dependency>
+                        <groupId>com.codahale.metrics</groupId>
+                        <artifactId>metrics-graphite</artifactId>
+                        <version>3.0.2</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.apache.hadoop</groupId>
                         <artifactId>hadoop-yarn-server-resourcemanager</artifactId>
@@ -247,6 +263,11 @@
                         <artifactId>hadoop-mapreduce-client-core</artifactId>
                         <version>${hadoop.version}</version>
                         <scope>provided</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>joda-time</groupId>
+                        <artifactId>joda-time</artifactId>
+                        <version>2.9.3</version>
                     </dependency>
                 </dependencies>
           </dependencyManagement>
