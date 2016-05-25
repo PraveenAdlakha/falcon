@@ -56,6 +56,9 @@ public class MetricNotificationService implements FalconService {
                 .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
                 .getProperty("falcon.graphite.port"))));
         metricRegistry=new MetricRegistry();
+        LOG.info("Hostname:" + StartupProperties
+                .get().getProperty("falcon.graphite.hostname") + "Port:" + Integer.parseInt(StartupProperties.get()
+                .getProperty("falcon.graphite.port")) );
         this.graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
                 .convertDurationsTo(TimeUnit.SECONDS)
                 .filter(MetricFilter.ALL)
@@ -90,6 +93,7 @@ public class MetricNotificationService implements FalconService {
 
     public void publish(String metricsName, Long value){
         synchronized(this){
+            LOG.info("metricName:" + metricsName +"value:" +value);
             createMetric(metricsName).setValue(value);
         }
     }

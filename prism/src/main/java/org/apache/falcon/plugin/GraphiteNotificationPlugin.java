@@ -42,8 +42,10 @@ public class GraphiteNotificationPlugin implements MonitoringPlugin {
 
     @Override
     public void monitor(ResourceMessage message) {
-        MetricNotificationService metricNotificationService =
-                Services.get().getService(MetricNotificationService.SERVICE_NAME);
+        MetricNotificationService metricNotificationService = MetricNotificationService.get();
+                   //Services.get().getService(MetricNotificationService.SERVICE_NAME);
+
+        LOG.info("GraphiteNotification Plugin:" + message.toString());
         try {
             String entityType = message.getDimensions().get("entity-type");
             String entityName = message.getDimensions().get("entity-name");
