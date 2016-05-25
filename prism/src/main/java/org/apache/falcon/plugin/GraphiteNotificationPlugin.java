@@ -48,7 +48,7 @@ public class GraphiteNotificationPlugin implements MonitoringPlugin {
             String entityType = message.getDimensions().get("entity-type");
             String entityName = message.getDimensions().get("entity-name");
             String prefix = StartupProperties.get().getProperty("falcon.graphite.prefix");
-            LOG.info("message:" + message.getAction());
+            LOG.debug("message:" + message.getAction());
             if (entityType.equals(EntityType.PROCESS.name())) {
                 Entity entity = ConfigurationStore.get().get(EntityType.PROCESS, entityName);
                 Process process = (Process) entity;
