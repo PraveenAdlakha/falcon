@@ -55,8 +55,8 @@ public class MetricNotificationService implements FalconService {
         Graphite graphite = new Graphite(new InetSocketAddress(StartupProperties
                 .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
                 .getProperty("falcon.graphite.port"))));
-        LOG.info("Graphite Hostname:"+ StartupProperties
-                .get().getProperty("falcon.graphite.hostname") + "Port:" +Integer.parseInt(StartupProperties.get()
+        LOG.info("Graphite Hostname: {} Port: {}" , StartupProperties
+                .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
                 .getProperty("falcon.graphite.port")) );
         metricRegistry=new MetricRegistry();
         this.graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
