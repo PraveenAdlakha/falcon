@@ -39,6 +39,7 @@ public abstract class AbstractFalconAspect {
 
     @Around("@annotation(org.apache.falcon.monitors.Monitored)")
     public Object logAroundMonitored(ProceedingJoinPoint joinPoint) throws Throwable {
+        LOG.info("Grphite debugging in falcon aspect");
 
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();

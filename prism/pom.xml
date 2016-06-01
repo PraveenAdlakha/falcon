@@ -97,11 +97,13 @@
         <dependency>
             <groupId>org.apache.falcon</groupId>
             <artifactId>falcon-metrics</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.falcon</groupId>
             <artifactId>falcon-rerun</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -247,6 +249,7 @@
                         <include>org/apache/falcon/plugin/ChainableMonitoringPluginTest.java</include>
                         <include>org/apache/falcon/aspect/GenericAlert.java</include>
                         <include>org/apache/falcon/aspect/GenericAlertTest.java</include>
+                        <include>org/apache/falcon/security/FalconAuditFilter.java</include>
                     </includes>
                     <weaveDependencies>
                         <weaveDependency>
