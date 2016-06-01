@@ -53,11 +53,11 @@ public class MetricNotificationService implements FalconService {
 
     public MetricNotificationService(){
         Graphite graphite = new Graphite(new InetSocketAddress(StartupProperties
-                .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
-                .getProperty("falcon.graphite.port"))));
+                    .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
+                        .getProperty("falcon.graphite.port"))));
         LOG.debug("Graphite Hostname: {} Port: {}" , StartupProperties
                 .get().getProperty("falcon.graphite.hostname"), Integer.parseInt(StartupProperties.get()
-                .getProperty("falcon.graphite.port")) );
+                .getProperty("falcon.graphite.port")));
         metricRegistry=new MetricRegistry();
         this.graphiteReporter = GraphiteReporter.forRegistry(metricRegistry)
                 .convertDurationsTo(TimeUnit.SECONDS)

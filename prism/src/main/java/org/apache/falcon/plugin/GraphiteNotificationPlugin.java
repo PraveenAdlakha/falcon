@@ -45,10 +45,10 @@ public class GraphiteNotificationPlugin implements MonitoringPlugin {
         MetricNotificationService metricNotificationService =
                 Services.get().getService(MetricNotificationService.SERVICE_NAME);
         try {
-            String entityType = StringUtils.isNotBlank(message.getDimensions().get("entityType")) ?
-                    message.getDimensions().get("entityType") :message.getDimensions().get("entity-type") ;
-            String entityName = StringUtils.isNotBlank(message.getDimensions().get("entityName")) ?
-                    message.getDimensions().get("entityName") :message.getDimensions().get("entity-name") ;
+            String entityType = StringUtils.isNotBlank(message.getDimensions().get("entityType"))
+                    ? message.getDimensions().get("entityType") :message.getDimensions().get("entity-type");
+            String entityName = StringUtils.isNotBlank(message.getDimensions().get("entityName"))
+                    ? message.getDimensions().get("entityName") :message.getDimensions().get("entity-name");
             String prefix = StartupProperties.get().getProperty("falcon.graphite.prefix");
             String separator = ".";
             LOG.debug("message:" + message.getAction());
