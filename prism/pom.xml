@@ -250,6 +250,13 @@
                         <include>org/apache/falcon/aspect/GenericAlert.java</include>
                         <include>org/apache/falcon/aspect/GenericAlertTest.java</include>
                         <include>org/apache/falcon/security/FalconAuditFilter.java</include>
+                        <include>org/apache/falcon/resource/metadata/LineageMetadataResource</include>
+                        <include>org/apache/falcon/messaging/JMSMessageConsumer</include>
+                        <include>org/apache/falcon/service/LogCleanupService</include>
+                        <include>org/apache/falcon/cleanup/LogCleanupServiceTest</include>
+                        <include>org/apache/falcon/security/AuthenticationInitializationService</include>
+                        <include>org/apache/falcon/security/AuthenticationInitializationServiceTest</include>
+                        <include>org/apache/falcon/messaging/JMSMessageConsumerTest</include>
                     </includes>
                     <weaveDependencies>
                         <weaveDependency>
