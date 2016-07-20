@@ -79,6 +79,7 @@ public class FalconCLI {
     public static final String CLIENT_PROPERTIES = "/client.properties";
     public static final String DO_AS_OPT = "doAs";
 
+
     private final Properties clientProperties;
 
     public FalconCLI() throws Exception {

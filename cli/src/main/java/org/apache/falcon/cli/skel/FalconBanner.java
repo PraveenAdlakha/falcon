@@ -19,6 +19,7 @@
 
 package org.apache.falcon.cli.skel;
 
+import org.apache.falcon.cli.commands.BaseFalconCommands;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.shell.plugin.support.DefaultBannerProvider;
@@ -40,6 +41,7 @@ public class FalconBanner extends DefaultBannerProvider {
                 .append("*            Falcon CLI               *").append(OsUtils.LINE_SEPARATOR)
                 .append("*                                     *").append(OsUtils.LINE_SEPARATOR)
                 .append("=======================================").append(OsUtils.LINE_SEPARATOR)
+                .append("falcon.url:"+ BaseFalconCommands.getClientProperties().get("falcon.url")).append(OsUtils.LINE_SEPARATOR)
                 .toString();
 
     }
