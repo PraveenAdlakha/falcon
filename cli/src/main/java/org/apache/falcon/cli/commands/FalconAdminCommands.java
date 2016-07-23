@@ -33,6 +33,7 @@ import static org.apache.falcon.cli.FalconAdminCLI.VERSION_OPT_DESCRIPTION;
  */
 @Component
 public class FalconAdminCommands extends BaseFalconCommands {
+    //TODO use FalconCLI Constant
     public static final String ADMIN_PREFIX = "admin";
     public static final String ADMIN_COMMAND_PREFIX = ADMIN_PREFIX + " ";
 
@@ -55,6 +56,7 @@ public class FalconAdminCommands extends BaseFalconCommands {
     ) {
         return getFalconClient().getThreadDump(getDoAs());
     }
+    //TODO change server admin server
 
     @CliCommand(value = {"server " + VERSION_OPT}, help = VERSION_OPT_DESCRIPTION)
     public String version(
