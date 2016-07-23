@@ -133,7 +133,6 @@ public class FalconEntityCLI extends FalconCLI {
                 "Updates dependent entities of a cluster in workflow engine");
 
         OptionGroup group = new OptionGroup();
-        group.addOption(submit);
         group.addOption(update);
         group.addOption(updateClusterDependents);
         group.addOption(schedule);
@@ -150,6 +149,7 @@ public class FalconEntityCLI extends FalconCLI {
         group.addOption(slaAlert);
         group.addOption(entitySummary);
         group.addOption(touch);
+        group.addOption(submit);
 
         Option url = new Option(URL_OPTION, true, URL_OPTION_DESCRIPTION);
         Option entityType = new Option(TYPE_OPT, true, TYPE_OPT_DESCRIPTION);
