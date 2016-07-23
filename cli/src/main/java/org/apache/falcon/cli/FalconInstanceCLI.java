@@ -23,6 +23,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.falcon.FalconCLIConstants;
+import org.apache.falcon.FalconClientUtil;
 import org.apache.falcon.LifeCycle;
 import org.apache.falcon.ResponseHelper;
 import org.apache.falcon.client.FalconCLIException;
@@ -30,85 +31,86 @@ import org.apache.falcon.client.FalconClient;
 import org.apache.falcon.resource.InstanceDependencyResult;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static org.apache.falcon.FalconCLIConstants.RUNNING_OPT;
+import static org.apache.falcon.FalconCLIConstants.RUNNING_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.LIST_OPT;
+import static org.apache.falcon.FalconCLIConstants.LIST_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.STATUS_OPT;
+import static org.apache.falcon.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.SUMMARY_OPT;
+import static org.apache.falcon.FalconCLIConstants.SUMMARY_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.KILL_OPT;
+import static org.apache.falcon.FalconCLIConstants.KILL_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.SUSPEND_OPT;
+import static org.apache.falcon.FalconCLIConstants.SUSPEND_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.RESUME_OPT;
+import static org.apache.falcon.FalconCLIConstants.RESUME_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.RERUN_OPT;
+import static org.apache.falcon.FalconCLIConstants.LOG_OPT;
+import static org.apache.falcon.FalconCLIConstants.LOG_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.PARARMS_OPT;
+import static org.apache.falcon.FalconCLIConstants.PARARMS_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.LISTING_OPT;
+import static org.apache.falcon.FalconCLIConstants.LISTING_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.DEPENDENCY_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.DEPENDENCY_OPT;
+import static org.apache.falcon.FalconCLIConstants.TRIAGE_OPT;
+import static org.apache.falcon.FalconCLIConstants.TRIAGE_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.SEARCH_OPT;
+import static org.apache.falcon.FalconCLIConstants.URL_OPTION;
+import static org.apache.falcon.FalconCLIConstants.START_OPT;
+import static org.apache.falcon.FalconCLIConstants.START_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.END_OPT;
+import static org.apache.falcon.FalconCLIConstants.END_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.RUNID_OPT;
+import static org.apache.falcon.FalconCLIConstants.CLUSTERS_OPT;
+import static org.apache.falcon.FalconCLIConstants.CLUSTERS_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.SOURCECLUSTER_OPT;
+import static org.apache.falcon.FalconCLIConstants.SOURCECLUSTER_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.FILE_PATH_OPT;
+import static org.apache.falcon.FalconCLIConstants.FILE_PATH_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.TYPE_OPT;
+import static org.apache.falcon.FalconCLIConstants.TYPE_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.ENTITY_NAME_OPT;
+import static org.apache.falcon.FalconCLIConstants.ENTITY_NAME_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.COLO_OPT;
+import static org.apache.falcon.FalconCLIConstants.COLO_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.RERUN_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.URL_OPTION_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.RUNID_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.LIFECYCLE_OPT;
+import static org.apache.falcon.FalconCLIConstants.LIFECYCLE_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.FILTER_BY_OPT;
+import static org.apache.falcon.FalconCLIConstants.FILTER_BY_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.ORDER_BY_OPT;
+import static org.apache.falcon.FalconCLIConstants.ORDER_BY_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.SORT_ORDER_OPT;
+import static org.apache.falcon.FalconCLIConstants.SORT_ORDER_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.OFFSET_OPT;
+import static org.apache.falcon.FalconCLIConstants.OFFSET_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.NUM_RESULTS_OPT;
+import static org.apache.falcon.FalconCLIConstants.NUM_RESULTS_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.FORCE_RERUN_FLAG;
+import static org.apache.falcon.FalconCLIConstants.FORCE_RERUN_FLAG_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.DO_AS_OPT;
+import static org.apache.falcon.FalconCLIConstants.DO_AS_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.DEBUG_OPTION;
+import static org.apache.falcon.FalconCLIConstants.DEBUG_OPTION_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.INSTANCE_TIME_OPT;
+import static org.apache.falcon.FalconCLIConstants.INSTANCE_TIME_OPT_DESCRIPTION;
+import static org.apache.falcon.FalconCLIConstants.ALL_ATTEMPTS;
+import static org.apache.falcon.FalconCLIConstants.ALL_ATTEMPTS_DESCRIPTION;
+import static org.apache.falcon.FalconClientUtil.getLifeCycle;
+
 
 /**
  * Instance extension to Falcon Command Line Interface - wraps the RESTful API for instances.
  */
 public class FalconInstanceCLI extends FalconCLI {
-
-    public static final String RUNNING_OPT_DESCRIPTION = "Gets running process instances for a given process";
-    public static final String LIST_OPT_DESCRIPTION = "Gets all instances for a given process in the range start "
-          + "time and optional end time";
-    public static final String STATUS_OPT_DESCRIPTION = "Gets status of process instances for a given process in"
-          + " the range start time and optional end time";
-    public static final String SUMMARY_OPT_DESCRIPTION = "Gets summary of instances for a given process in the"
-          + " range start time and optional end time";
-    public static final String KILL_OPT_DESCRIPTION = "Kills active process instances for a given process in the"
-          + " range start time and optional end time";
-    public static final String SUSPEND_OPT_DESCRIPTION = "Suspends active process instances for a given process in"
-          + " the range start time and optional end time";
-    public static final String RESUME_OPT_DESCRIPTION = "Resumes suspended process instances for a given"
-          + " process in the range start time and optional end time";
-    public static final String RERUN_OPT_DESCRIPTION = "Reruns process instances for a given process in the"
-          + " range start time and optional end time and overrides properties present in job.properties file";
-    public static final String LOG_OPT_DESCRIPTION = "Logs print the logs for process instances for a given"
-          + " process in the range start time and optional end time";
-    public static final String PARARMS_OPT_DESCRIPTION = "Displays the workflow parameters for a given instance"
-          + " of specified nominal time start time represents nominal time and end time is not considered";
-    public static final String LISTING_OPT_DESCRIPTION = "Displays feed listing and their status between a"
-          + " start and end time range.";
-    public static final String DEPENDENCY_OPT_DESCRIPTION = "Displays dependent instances for a specified"
-          + " instance.";
-    public static final String TRIAGE_OPT_DESCRIPTION = "Triage a feed or process instance and find the failures"
-          + " in it's lineage.";
-    public static final String URL_OPTION_DESCRIPTION = "Falcon URL";
-    public static final String START_OPT_DESCRIPTION = "Start time is required for commands, status, kill, "
-          + "suspend, resume and re-runand it is nominal time while displaying workflow params";
-    public static final String END_OPT_DESCRIPTION = "End time is optional for commands, status, kill, suspend, "
-          + "resume and re-run; if not specified then current time is considered as end time";
-    public static final String RUNID_OPT_DESCRIPTION = "Instance runid  is optional and user can specify the "
-          + "runid, defaults to 0";
-    public static final String CLUSTERS_OPT_DESCRIPTION = "clusters is optional for commands kill, suspend and "
-          + "resume, should not be specified for other commands";
-    public static final String SOURCECLUSTER_OPT_DESCRIPTION = " source cluster is optional for commands kill, "
-          + "suspend and resume, should not be specified for other commands (required for only feed)";
-    public static final String FILE_PATH_OPT_DESCRIPTION = "Path to job.properties file is required for rerun "
-          + "command, it should contain name=value pair for properties to override for rerun";
-    public static final String TYPE_OPT_DESCRIPTION = "Entity type, can be feed or process xml";
-    public static final String ENTITY_NAME_OPT_DESCRIPTION = "Entity name, can be feed or process name";
-    public static final String COLO_OPT_DESCRIPTION = "Colo on which the cmd has to be executed";
-    public static final String LIFECYCLE_OPT_DESCRIPTION = "describes life cycle of entity , for feed it can be "
-          + "replication/retention and for process it can be execution";
-    public static final String FILTER_BY_OPT_DESCRIPTION = "Filter returned instances by the specified fields";
-    public static final String ORDER_BY_OPT_DESCRIPTION = "Order returned instances by this field";
-    public static final String SORT_ORDER_OPT_DESCRIPTION = "asc or desc order for results";
-    public static final String OFFSET_OPT_DESCRIPTION = "Start returning instances from this offset";
-    public static final String NUM_RESULTS_OPT_DESCRIPTION = "Number of results to return per request";
-    public static final String FORCE_RERUN_FLAG_DESCRIPTION = "Flag to forcefully rerun entire workflow "
-          + "of an instance";
-    public static final String DO_AS_OPT_DESCRIPTION = "doAs user";
-    public static final String DEBUG_OPTION_DESCRIPTION = "Use debug mode to see debugging statements on stdout";
-    public static final String INSTANCE_TIME_OPT_DESCRIPTION = "Time for an instance";
-    public static final String ALL_ATTEMPTS_DESCRIPTION = "To get all attempts of corresponding instances";
-    public static final String FORCE_RERUN_FLAG = "force";
-    private static final String INSTANCE_TIME_OPT = "instanceTime";
-    public static final String RUNNING_OPT = "running";
-    public static final String KILL_OPT = "kill";
-    public static final String RERUN_OPT = "rerun";
-    public static final String LOG_OPT = "logs";
-    private static final String SEARCH_OPT = "search";
-    public static final String ALL_ATTEMPTS = "allAttempts";
-    public static final String RUNID_OPT = "runid";
-    public static final String CLUSTERS_OPT = "clusters";
-    public static final String SOURCECLUSTER_OPT = "sourceClusters";
-    public static final String LIFECYCLE_OPT = "lifecycle";
-    public static final String PARARMS_OPT = "params";
-    public static final String LISTING_OPT = "listing";
-    public static final String TRIAGE_OPT = "triage";
 
     public FalconInstanceCLI() throws Exception {
         super();
@@ -245,7 +247,7 @@ public class FalconInstanceCLI extends FalconCLI {
             validateNotEmpty(colo, FalconCLIConstants.COLO_OPT);
             validateNotEmpty(start, FalconCLIConstants.START_OPT);
             validateNotEmpty(type, FalconCLIConstants.TYPE_OPT);
-            validateEntityTypeForSummary(type);
+            FalconClientUtil.validateEntityTypeForSummary(type);
             validateNotEmpty(entity, FalconCLIConstants.ENTITY_NAME_OPT);
             result = client.triage(type, entity, start, colo).toString();
         } else if (optionsList.contains(FalconCLIConstants.DEPENDENCY_OPT)) {
@@ -254,8 +256,8 @@ public class FalconInstanceCLI extends FalconCLI {
             result = ResponseHelper.getString(response);
 
         } else if (optionsList.contains(RUNNING_OPT)) {
-            validateOrderBy(orderBy, instanceAction);
-            validateFilterBy(filterBy, instanceAction);
+            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
+            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getRunningInstances(type,
                     entity, colo, lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser));
         } else if (optionsList.contains(FalconCLIConstants.STATUS_OPT)
@@ -264,13 +266,13 @@ public class FalconInstanceCLI extends FalconCLI {
             if (optionsList.contains(ALL_ATTEMPTS)) {
                 allAttempts = true;
             }
-            validateOrderBy(orderBy, instanceAction);
-            validateFilterBy(filterBy, instanceAction);
+            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
+            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getStatusOfInstances(type, entity, start, end, colo,
                     lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser, allAttempts));
         } else if (optionsList.contains(FalconCLIConstants.SUMMARY_OPT)) {
-            validateOrderBy(orderBy, "summary");
-            validateFilterBy(filterBy, "summary");
+            FalconClientUtil.validateOrderBy(orderBy, "summary");
+            FalconClientUtil.validateFilterBy(filterBy, "summary");
             result = ResponseHelper.getString(client.getSummaryOfInstances(type, entity, start, end, colo,
                     lifeCycles, filterBy, orderBy, sortOrder, doAsUser));
         } else if (optionsList.contains(KILL_OPT)) {
@@ -298,8 +300,8 @@ public class FalconInstanceCLI extends FalconCLI {
             result = ResponseHelper.getString(client.rerunInstances(type, entity, start, end, filePath, colo,
                     clusters, sourceClusters, lifeCycles, isForced, doAsUser));
         } else if (optionsList.contains(LOG_OPT)) {
-            validateOrderBy(orderBy, instanceAction);
-            validateFilterBy(filterBy, instanceAction);
+            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
+            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getLogsOfInstances(type, entity, start, end, colo, runId,
                     lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser), runId);
         } else if (optionsList.contains(PARARMS_OPT)) {
@@ -351,23 +353,6 @@ public class FalconInstanceCLI extends FalconCLI {
                 throw new FalconCLIException("Force option can be used only with instance rerun");
             }
         }
-    }
-
-
-    public static List<LifeCycle> getLifeCycle(String lifeCycleValue) {
-        if (lifeCycleValue != null) {
-            String[] lifeCycleValues = lifeCycleValue.split(",");
-            List<LifeCycle> lifeCycles = new ArrayList<LifeCycle>();
-            try {
-                for (String lifeCycle : lifeCycleValues) {
-                    lifeCycles.add(LifeCycle.valueOf(lifeCycle.toUpperCase().trim()));
-                }
-            } catch (IllegalArgumentException e) {
-                throw new FalconCLIException("Invalid life cycle values: " + lifeCycles, e);
-            }
-            return lifeCycles;
-        }
-        return null;
     }
 
 }
