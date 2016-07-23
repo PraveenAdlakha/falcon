@@ -30,17 +30,15 @@ import org.apache.falcon.client.FalconClient;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import static org.apache.falcon.FalconCLIConstants.STACK_OPTION;
 
 /**
  * Admin extension to Falcon Command Line Interface - wraps the RESTful API for admin commands.
  */
 public class FalconAdminCLI extends FalconCLI {
 
-    public static final String STACK_OPTION = "stack";
-    public static final String STATUS_OPT_DESCRIPTION = "show the current system status";
-    public static final String VERSION_OPT_DESCRIPTION = "show Falcon server build version";
-    public static final String STACK_OPTION_DESCRIPTION = "show the thread stack dump";
-    public static final String DO_AS_OPT_DESCRIPTION = "doAs user";
+
+
 
     public FalconAdminCLI() throws Exception {
         super();
