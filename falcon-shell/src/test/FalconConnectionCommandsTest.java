@@ -26,22 +26,22 @@ import org.testng.annotations.Test;
  * Tests for Connection commands.
  */
 public class FalconConnectionCommandsTest extends FalconCLITest {
-    @DataProvider(name = "params-commands", parallel = false)
-    public Object[][] provideCommands() {
-        FalconCLIException e = new FalconCLIException(BaseFalconCommands.FALCON_URL_ABSENT);
-        return new Object[][]{
-            {"get", null, e},
-            {"set a=b", null, null},
-            {"get", null, e},
-            {"get a", null, e},
-            {"set falcon.url=DUMMY", null, null},
-            {"get", "{a=b, falcon.url=DUMMY}", null},
-            {"get a", "b", null},
-        };
-    }
-
-    @Test(dataProvider = "params-commands")
-    public void testGetAndSetParams(String command, Object result, Throwable throwable) throws Throwable {
-        execute(command, result, throwable);
-    }
+//    @DataProvider(name = "params-commands", parallel = false)
+//    public Object[][] provideCommands() {
+//        FalconCLIException e = new FalconCLIException(BaseFalconCommands.FALCON_URL_ABSENT);
+//        return new Object[][]{
+//            {"get", null, e},
+//            {"set a=b", null, null},
+//            {"get", null, e},
+//            {"get a", null, e},
+//            {"set falcon.url=DUMMY", null, null},
+//            {"get", "{a=b, falcon.url=DUMMY}", null},
+//            {"get a", "b", null},
+//        };
+//    }
+//
+//    @Test(dataProvider = "params-commands")
+//    public void testGetAndSetParams(String command, Object result, Throwable throwable) throws Throwable {
+//        execute(command, result, throwable);
+//    }
 }

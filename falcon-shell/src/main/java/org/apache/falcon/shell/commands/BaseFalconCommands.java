@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.falcon.cli.commands;
+package org.apache.falcon.shell.commands;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,23 +30,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.apache.falcon.cli.FalconCLI.CURRENT_COLO;
-import static org.apache.falcon.cli.FalconCLI.FALCON_URL;
+import static org.apache.falcon.FalconCLIConstants.CURRENT_COLO;
+import static org.apache.falcon.FalconCLIConstants.FALCON_URL;
 
 /**
  * Common code for all falcon command classes.
  */
 public class BaseFalconCommands implements ExecutionProcessor {
-    private static final String FALCON_URL_PROPERTY = "falcon.url";
+    protected static final String FALCON_URL_PROPERTY = "falcon.url";
     private static final String DO_AS = "DO_AS";
     private static final String DO_AS_PROPERTY = "do.as";
-    private static final String CLIENT_PROPERTIES = "/client.properties";
+    private static final String CLIENT_PROPERTIES = "/cli.properties";
     protected static final String FALCON_URL_ABSENT = "Failed to get falcon url from environment or client properties";
     private static Properties clientProperties;
     private static Properties backupProperties = new Properties();
     private static AbstractFalconClient client;
 
-    protected static Properties getClientProperties() {
+    static {
+        clientProperties = getClientProperties();
+    }
+
+
+    public static Properties getClientProperties() {
         if (clientProperties == null) {
             InputStream inputStream = null;
             Properties prop = new Properties(System.getProperties());
