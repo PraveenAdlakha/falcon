@@ -290,6 +290,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
         FalconClientUtil.validateFilterBy(filterBy, ENTITY_PREFIX);
         EntityList entityList = BaseFalconCommands.getFalconClient().getEntityList(entityType.name().toLowerCase(), fields,
                 nameSubsequence, tagKeywords, filterBy, filterTags, orderBy, sortOrder, offset, numResults, getDoAs());
+        System.out.println( "Falcon URL:" + getClientProperties().getProperty(FALCON_URL_PROPERTY));
         return entityList != null ? entityList.toString() : "No entity of type (" + entityType + ") found.";
     }
 
