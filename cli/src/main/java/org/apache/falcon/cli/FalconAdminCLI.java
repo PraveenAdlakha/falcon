@@ -30,13 +30,15 @@ import org.apache.falcon.client.FalconClient;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import static org.apache.falcon.FalconCLIConstants.STACK_OPTION;
 
 /**
  * Admin extension to Falcon Command Line Interface - wraps the RESTful API for admin commands.
  */
 public class FalconAdminCLI extends FalconCLI {
 
-    private static final String STACK_OPTION = "stack";
+
+
 
     public FalconAdminCLI() throws Exception {
         super();
@@ -73,8 +75,7 @@ public class FalconAdminCLI extends FalconCLI {
         return adminOptions;
     }
 
-    public int adminCommand(CommandLine commandLine, FalconClient client,
-                             String falconUrl) throws IOException {
+    public int adminCommand(CommandLine commandLine, FalconClient client, String falconUrl) throws IOException {
         String result;
         Set<String> optionsList = new HashSet<String>();
         for (Option option : commandLine.getOptions()) {
