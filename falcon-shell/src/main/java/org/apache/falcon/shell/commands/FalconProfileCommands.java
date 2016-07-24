@@ -19,7 +19,9 @@ package org.apache.falcon.shell.commands;
  */
 
 import org.apache.commons.io.IOUtils;
+import org.apache.falcon.client.AbstractFalconClient;
 import org.apache.falcon.client.FalconCLIException;
+import org.apache.falcon.client.FalconClient;
 import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.shell.support.util.OsUtils;
@@ -40,10 +42,11 @@ public class FalconProfileCommands extends BaseFalconCommands{
 
     public static final String LIST_PROFILE = "listProfile";
     public static final String LIST_HELP = "lists the colos available to set in falcon.url";
-    public static final String SET_PROFILE = "setProfile";
+    public static final String SET_PROFILE = "updateProfile";
     public static final String SET_HELP = "update falcon.url with new url";
     public static final String PROFILE = "profile";
     private static final String CLIENT_PROPERTIES = "/cli.properties";
+    private static AbstractFalconClient client;
 
     @CliCommand(value = LIST_PROFILE , help = LIST_HELP)
     public String listProfile()
@@ -78,6 +81,7 @@ public class FalconProfileCommands extends BaseFalconCommands{
         Properties properties =  getClientProperties();
         String profile = properties.getProperty(key);
         properties.setProperty(FALCON_URL_PROPERTY,profile);
+        client = new FalconClient(getClientProperties().getProperty(FALCON_URL_PROPERTY), getClientProperties());
 
         return FALCON_URL_PROPERTY +"="+profile;
     }
