@@ -81,8 +81,9 @@ public class FalconProfileCommands extends BaseFalconCommands{
         Properties properties =  getClientProperties();
         String profile = properties.getProperty(key);
         properties.setProperty(FALCON_URL_PROPERTY,profile);
-        client = new FalconClient(getClientProperties().getProperty(FALCON_URL_PROPERTY), getClientProperties());
-
-        return FALCON_URL_PROPERTY +"="+profile;
+        client = BaseFalconCommands.getFalconClient();
+        //Reload the client on the next run
+        client = null;
+        return FALCON_URL_PROPERTY +"="+ profile;
     }
 }

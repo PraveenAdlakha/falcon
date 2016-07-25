@@ -158,7 +158,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {TYPE_OPT}, mandatory = true, help = TYPE_OPT_DESCRIPTION) final EntityType entityType,
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION)
             final String entityName,
-            @CliOption(key = {COLO_OPT}, mandatory = true, help = COLO_OPT_DESCRIPTION)
+            @CliOption(key = {COLO_OPT}, mandatory = false, help = COLO_OPT_DESCRIPTION)
             final String colo,
             @CliOption(key = {START_OPT}, mandatory = false, help = START_OPT_DESCRIPTION) final String start,
             @CliOption(key = {END_OPT}, mandatory = false, help = END_OPT_DESCRIPTION) final String end,
