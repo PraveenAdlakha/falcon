@@ -26,17 +26,16 @@
         <artifactId>falcon-main</artifactId>
         <version>0.11-SNAPSHOT</version>
     </parent>
-    <groupId>org.apache.falcon</groupId>
     <artifactId>falcon-shell</artifactId>
     <name>Apache Falcon Shell</name>
 
     <dependencies>
 
-        <!--<dependency>-->
-            <!--<groupId>org.apache.hadoop</groupId>-->
-            <!--<artifactId>hadoop-auth</artifactId>-->
-            <!--<version>0.23.1</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-auth</artifactId>
+            <scope>compile</scope>
+        </dependency>
 
         <!--<dependency>-->
             <!--<groupId>org.apache.hadoop</groupId>-->
@@ -199,6 +198,10 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.springframework.shell.Bootstrap</mainClass>
+                                </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
                                 <transformer
