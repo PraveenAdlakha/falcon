@@ -31,11 +31,11 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-auth</artifactId>
-            <scope>compile</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.hadoop</groupId>-->
+            <!--<artifactId>hadoop-auth</artifactId>-->
+            <!--<scope>compile</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.apache.falcon</groupId>
@@ -186,7 +186,7 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.springframework.shell.Bootstrap</mainClass>
+                                    <!--<mainClass>org.springframework.shell.Bootstrap</mainClass>-->
                                 </transformer>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
@@ -196,6 +196,15 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>falcon-cli-hist.log</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

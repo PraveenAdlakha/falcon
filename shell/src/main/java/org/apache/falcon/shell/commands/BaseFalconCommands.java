@@ -40,7 +40,7 @@ public class BaseFalconCommands implements ExecutionProcessor {
     protected static final String FALCON_URL_PROPERTY = "falcon.url";
     private static final String DO_AS = "DO_AS";
     private static final String DO_AS_PROPERTY = "do.as";
-    private static final String CLIENT_PROPERTIES = "/cli.properties";
+    private static final String CLIENT_PROPERTIES = "/shell.properties";
     protected static final String FALCON_URL_ABSENT = "Failed to get falcon url from environment or client properties";
     private static Properties clientProperties;
     private static Properties backupProperties = new Properties();
