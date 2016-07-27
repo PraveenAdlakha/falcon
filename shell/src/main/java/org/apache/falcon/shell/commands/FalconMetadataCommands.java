@@ -69,7 +69,7 @@ import static org.apache.falcon.FalconClientUtil.validateVertexEdgesCommand;
 import static org.apache.falcon.FalconClientUtil.validateVerticesCommand;
 
 /**
- * Instance commands.
+ * Metadata commands.
  */
 @Component
 public class FalconMetadataCommands extends BaseFalconCommands {

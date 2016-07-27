@@ -29,7 +29,7 @@ import static org.apache.falcon.FalconCLIConstants.VERSION_OPT;
 import static org.apache.falcon.FalconCLIConstants.VERSION_OPT_DESCRIPTION;
 
 /**
- * Instance commands.
+ * Admin commands.
  */
 @Component
 public class FalconAdminCommands extends BaseFalconCommands {

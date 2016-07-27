@@ -394,7 +394,8 @@ public class FalconUnitClient extends AbstractFalconClient {
     // SUSPEND CHECKSTYLE CHECK ParameterNumberCheck
     @Override
     public InstancesResult getRunningInstances(String type, String entity, String colo, List<LifeCycle> lifeCycles,
-                                               String filterBy, String orderBy, String sortOrder, Integer offset, Integer numResults, String doAsUser) {
+                                               String filterBy, String orderBy, String sortOrder,
+                                               Integer offset, Integer numResults, String doAsUser) {
         return null;
     }
     // RESUME CHECKSTYLE CHECK ParameterNumberCheck
@@ -425,7 +426,8 @@ public class FalconUnitClient extends AbstractFalconClient {
     }
 
     @Override
-    public String getReplicationMetricsDimensionList(String schedEntityType, String schedEntityName, Integer numResults, String doAs) {
+    public String getReplicationMetricsDimensionList(String schedEntityType, String schedEntityName,
+                                                     Integer numResults, String doAs) {
         return null;
     }
 

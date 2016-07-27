@@ -41,7 +41,8 @@ public class FalconBanner extends DefaultBannerProvider {
                 .append("*            Falcon CLI               *").append(OsUtils.LINE_SEPARATOR)
                 .append("*                                     *").append(OsUtils.LINE_SEPARATOR)
                 .append("=======================================").append(OsUtils.LINE_SEPARATOR)
-                .append("falcon.url:"+ BaseFalconCommands.getClientProperties().get("falcon.url")).append(OsUtils.LINE_SEPARATOR)
+                .append("falcon.url:"+ BaseFalconCommands.getClientProperties().get("falcon.url"))
+                .append(OsUtils.LINE_SEPARATOR)
                 .toString();
 
     }

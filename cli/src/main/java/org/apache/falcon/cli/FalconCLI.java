@@ -28,15 +28,10 @@ import org.apache.falcon.FalconCLIConstants;
 import org.apache.falcon.cliParser.CLIParser;
 import org.apache.falcon.client.FalconCLIException;
 import org.apache.falcon.client.FalconClient;
-import org.apache.falcon.entity.v0.EntityType;
-import org.apache.falcon.resource.EntityList;
-import org.apache.falcon.resource.InstancesResult;
-import org.apache.falcon.resource.InstancesSummaryResult;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 import static org.apache.falcon.FalconCLIConstants.FALCON_URL;

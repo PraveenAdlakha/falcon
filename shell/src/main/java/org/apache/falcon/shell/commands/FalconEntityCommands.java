@@ -125,7 +125,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
                 .getFeedSlaMissPendingAlerts(entityType.name().toLowerCase(), entityName, start, end, getColo(colo));
         return ResponseHelper.getString(response);
     }
-    //The command here is submitOnly inplace of submit as it conflicts with submitAndSchedule and tab feature will not
+    //The command here is submitOnly in place of submit as it conflicts with submitAndSchedule and tab feature will not
     //work of shell
     @CliCommand(value = ENTITY_COMMAND_PREFIX + SUBMIT_ONLY_OPT, help = SUBMIT_OPT_DESCRIPTION)
     public String submit(
@@ -133,7 +133,8 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {FILE_PATH_OPT}, mandatory = true, help = FILE_PATH_OPT_DESCRIPTION) final File filePath
     ) {
 
-        return BaseFalconCommands.getFalconClient().submit(entityType.name().toLowerCase(), filePath.getPath(), getDoAs()).getMessage();
+        return BaseFalconCommands.getFalconClient().submit(entityType.name().toLowerCase(), filePath.getPath(),
+                getDoAs()).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + LOOKUP_OPT, help = LOOKUP_OPT_DESCRIPTION)
@@ -201,7 +202,8 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {PROPS_OPT}, mandatory = false, help = PROPS_OPT_DESCRIPTION) final String properties
     ) {
 
-        return BaseFalconCommands.getFalconClient().schedule(entityType, entityName, colo, skipDryRun, getDoAs(), properties).getMessage();
+        return BaseFalconCommands.getFalconClient().schedule(entityType, entityName, colo, skipDryRun, getDoAs(),
+                properties).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + SUSPEND_OPT, help = SUSPEND_OPT_DESCRIPTION)
@@ -245,7 +247,8 @@ public class FalconEntityCommands extends BaseFalconCommands {
                     help = SHOWSCHEDULER_OPT_DESCRIPTION) final boolean showScheduler
     ) {
 
-        return BaseFalconCommands.getFalconClient().getStatus(entityType, entityName, colo, getDoAs(), showScheduler).getMessage();
+        return BaseFalconCommands.getFalconClient().getStatus(entityType, entityName, colo, getDoAs(),
+                showScheduler).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + DEFINITION_OPT, help = DEFINITION_OPT_DESCRIPTION)
@@ -254,7 +257,8 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION) String entityName
     ) {
 
-        return BaseFalconCommands.getFalconClient().getDefinition(entityType.name().toLowerCase(), entityName, getDoAs()).toString();
+        return BaseFalconCommands.getFalconClient().getDefinition(entityType.name().toLowerCase(),
+                entityName, getDoAs()).toString();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + DEPENDENCY_OPT, help = DEPENDENCY_OPT_DESCRIPTION)
@@ -263,7 +267,8 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION) String entityName
     ) {
 
-        return BaseFalconCommands.getFalconClient().getDependency(entityType.name().toLowerCase(), entityName, getDoAs()).toString();
+        return BaseFalconCommands.getFalconClient().getDependency(entityType.name().toLowerCase(), entityName,
+                getDoAs()).toString();
     }
 
     // SUSPEND CHECKSTYLE CHECK ParameterNumberCheck
@@ -288,9 +293,9 @@ public class FalconEntityCommands extends BaseFalconCommands {
         FalconClientUtil.validateEntityFields(fields);
         FalconClientUtil.validateOrderBy(orderBy, ENTITY_PREFIX);
         FalconClientUtil.validateFilterBy(filterBy, ENTITY_PREFIX);
-        EntityList entityList = BaseFalconCommands.getFalconClient().getEntityList(entityType.name().toLowerCase(), fields,
-                nameSubsequence, tagKeywords, filterBy, filterTags, orderBy, sortOrder, offset, numResults, getDoAs());
-        System.out.println( "Falcon URL:" + getClientProperties().getProperty(FALCON_URL_PROPERTY));
+        EntityList entityList = BaseFalconCommands.getFalconClient().getEntityList(entityType.name().toLowerCase(),
+                fields, nameSubsequence, tagKeywords, filterBy, filterTags, orderBy, sortOrder, offset,
+                numResults, getDoAs());
         return entityList != null ? entityList.toString() : "No entity of type (" + entityType + ") found.";
     }
 

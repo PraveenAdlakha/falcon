@@ -1,5 +1,3 @@
-package org.apache.falcon.shell.commands;
-
 /**
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -17,9 +15,9 @@ package org.apache.falcon.shell.commands;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.apache.falcon.shell.commands;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.falcon.client.AbstractFalconClient;
 import org.apache.falcon.client.FalconCLIException;
 import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
@@ -34,7 +32,7 @@ import java.util.Properties;
 
 
 /**
- * Created by praveen.adlakha on 7/20/16.
+ * To update falcon.url.
  */
 @Component
 public class FalconProfileCommands extends BaseFalconCommands{
@@ -45,12 +43,10 @@ public class FalconProfileCommands extends BaseFalconCommands{
     public static final String SET_HELP = "update falcon.url with new url";
     public static final String PROFILE = "profile";
     private static final String CLIENT_PROPERTIES = "/shell.properties";
-    private static AbstractFalconClient client;
 
     @CliCommand(value = LIST_PROFILE , help = LIST_HELP)
-    public String listProfile()
-    {
-        StringBuilder stringBuilder = new StringBuilder() ;
+    public String listProfile() {
+        StringBuilder stringBuilder = new StringBuilder();
         Properties prop = new Properties();
         InputStream inputStream = null;
         try {
@@ -71,18 +67,13 @@ public class FalconProfileCommands extends BaseFalconCommands{
             Object o = e.nextElement();
             stringBuilder.append(o.toString()).append(OsUtils.LINE_SEPARATOR);
         }
-       return stringBuilder.toString();
+        return stringBuilder.toString();
     }
 
     @CliCommand(value = SET_PROFILE , help = SET_HELP)
     public String setProfile(@CliOption(key = {PROFILE}, mandatory = true, help = "key")
-    @Nonnull final String key){
-        Properties properties =  getClientProperties();
-        String profile = properties.getProperty(key);
-        properties.setProperty(FALCON_URL_PROPERTY,profile);
-        client = BaseFalconCommands.getFalconClient();
-        //Reload the client on the next run
-        client = null;
-        return FALCON_URL_PROPERTY +"="+ profile;
+        @Nonnull final String key){
+        BaseFalconCommands.setClientProperty(FALCON_URL_PROPERTY, PROFILE);
+        return FALCON_URL_PROPERTY +"="+ PROFILE;
     }
 }
