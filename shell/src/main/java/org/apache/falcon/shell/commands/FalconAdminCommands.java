@@ -21,12 +21,12 @@ package org.apache.falcon.shell.commands;
 import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.stereotype.Component;
 
-import static org.apache.falcon.FalconCLIConstants.STACK_OPTION;
-import static org.apache.falcon.FalconCLIConstants.STACK_OPTION_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.STATUS_OPT;
-import static org.apache.falcon.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.VERSION_OPT;
-import static org.apache.falcon.FalconCLIConstants.VERSION_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION;
+import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.VERSION_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.VERSION_OPT_DESCRIPTION;
 
 /**
  * Admin commands.

@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package org.apache.falcon;
+package org.apache.falcon.client;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.falcon.client.FalconCLIException;
+import org.apache.falcon.LifeCycle;
 import org.apache.falcon.entity.v0.EntityType;
 import org.apache.falcon.metadata.RelationshipType;
 import org.apache.falcon.resource.EntityList;
@@ -33,9 +33,9 @@ import java.util.List;
 /**
  * All the validation methods to check the params from CLI and Shell.
  */
-public final class FalconClientUtil {
+public final class ValidationUtil {
 
-    private FalconClientUtil(){}
+    private ValidationUtil(){}
 
     public static void validateEntityFields(String fields) {
         if (StringUtils.isEmpty(fields)) {

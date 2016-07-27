@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.falcon;
+package org.apache.falcon.client;
 
 /**
 * FalconCLI Constants.

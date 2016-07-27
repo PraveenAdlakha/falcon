@@ -30,8 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.apache.falcon.FalconCLIConstants.CURRENT_COLO;
-import static org.apache.falcon.FalconCLIConstants.FALCON_URL;
+import static org.apache.falcon.client.FalconCLIConstants.CURRENT_COLO;
+import static org.apache.falcon.client.FalconCLIConstants.FALCON_URL;
 
 /**
  * Common code for all falcon command classes.

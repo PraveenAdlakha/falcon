@@ -24,7 +24,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.falcon.FalconCLIConstants;
+import org.apache.falcon.client.FalconCLIConstants;
 import org.apache.falcon.cliParser.CLIParser;
 import org.apache.falcon.client.FalconCLIException;
 import org.apache.falcon.client.FalconClient;
@@ -34,7 +34,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-import static org.apache.falcon.FalconCLIConstants.FALCON_URL;
+import static org.apache.falcon.client.FalconCLIConstants.FALCON_URL;
 
 /**
  * Falcon Command Line Interface - wraps the RESTful API.

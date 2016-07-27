@@ -22,8 +22,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.apache.falcon.FalconCLIConstants;
-import org.apache.falcon.FalconClientUtil;
+import org.apache.falcon.client.FalconCLIConstants;
+import org.apache.falcon.client.ValidationUtil;
 import org.apache.falcon.LifeCycle;
 import org.apache.falcon.ResponseHelper;
 import org.apache.falcon.client.FalconCLIException;
@@ -35,76 +35,76 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.apache.falcon.FalconCLIConstants.RUNNING_OPT;
-import static org.apache.falcon.FalconCLIConstants.RUNNING_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.LIST_OPT;
-import static org.apache.falcon.FalconCLIConstants.LIST_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.STATUS_OPT;
-import static org.apache.falcon.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.SUMMARY_OPT;
-import static org.apache.falcon.FalconCLIConstants.SUMMARY_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.KILL_OPT;
-import static org.apache.falcon.FalconCLIConstants.KILL_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.SUSPEND_OPT;
-import static org.apache.falcon.FalconCLIConstants.SUSPEND_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.RESUME_OPT;
-import static org.apache.falcon.FalconCLIConstants.RESUME_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.RERUN_OPT;
-import static org.apache.falcon.FalconCLIConstants.LOG_OPT;
-import static org.apache.falcon.FalconCLIConstants.LOG_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.PARARMS_OPT;
-import static org.apache.falcon.FalconCLIConstants.PARARMS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.LISTING_OPT;
-import static org.apache.falcon.FalconCLIConstants.LISTING_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.DEPENDENCY_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.DEPENDENCY_OPT;
-import static org.apache.falcon.FalconCLIConstants.TRIAGE_OPT;
-import static org.apache.falcon.FalconCLIConstants.TRIAGE_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.SEARCH_OPT;
-import static org.apache.falcon.FalconCLIConstants.URL_OPTION;
-import static org.apache.falcon.FalconCLIConstants.START_OPT;
-import static org.apache.falcon.FalconCLIConstants.START_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.END_OPT;
-import static org.apache.falcon.FalconCLIConstants.END_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.RUNID_OPT;
-import static org.apache.falcon.FalconCLIConstants.CLUSTERS_OPT;
-import static org.apache.falcon.FalconCLIConstants.CLUSTERS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.SOURCECLUSTER_OPT;
-import static org.apache.falcon.FalconCLIConstants.SOURCECLUSTER_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.FILE_PATH_OPT;
-import static org.apache.falcon.FalconCLIConstants.FILE_PATH_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.TYPE_OPT;
-import static org.apache.falcon.FalconCLIConstants.TYPE_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.ENTITY_NAME_OPT;
-import static org.apache.falcon.FalconCLIConstants.ENTITY_NAME_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.COLO_OPT;
-import static org.apache.falcon.FalconCLIConstants.COLO_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.RERUN_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.URL_OPTION_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.RUNID_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.LIFECYCLE_OPT;
-import static org.apache.falcon.FalconCLIConstants.LIFECYCLE_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.FILTER_BY_OPT;
-import static org.apache.falcon.FalconCLIConstants.FILTER_BY_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.ORDER_BY_OPT;
-import static org.apache.falcon.FalconCLIConstants.ORDER_BY_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.SORT_ORDER_OPT;
-import static org.apache.falcon.FalconCLIConstants.SORT_ORDER_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.OFFSET_OPT;
-import static org.apache.falcon.FalconCLIConstants.OFFSET_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.NUM_RESULTS_OPT;
-import static org.apache.falcon.FalconCLIConstants.NUM_RESULTS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.FORCE_RERUN_FLAG;
-import static org.apache.falcon.FalconCLIConstants.FORCE_RERUN_FLAG_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.DO_AS_OPT;
-import static org.apache.falcon.FalconCLIConstants.DO_AS_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.DEBUG_OPTION;
-import static org.apache.falcon.FalconCLIConstants.DEBUG_OPTION_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.INSTANCE_TIME_OPT;
-import static org.apache.falcon.FalconCLIConstants.INSTANCE_TIME_OPT_DESCRIPTION;
-import static org.apache.falcon.FalconCLIConstants.ALL_ATTEMPTS;
-import static org.apache.falcon.FalconCLIConstants.ALL_ATTEMPTS_DESCRIPTION;
-import static org.apache.falcon.FalconClientUtil.getLifeCycle;
+import static org.apache.falcon.client.FalconCLIConstants.RUNNING_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.RUNNING_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.LIST_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.LIST_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.SUMMARY_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.SUMMARY_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.KILL_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.KILL_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.SUSPEND_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.SUSPEND_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.RESUME_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.RESUME_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.RERUN_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.LOG_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.LOG_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.PARARMS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.PARARMS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.LISTING_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.LISTING_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.DEPENDENCY_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.DEPENDENCY_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.TRIAGE_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.TRIAGE_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.SEARCH_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION;
+import static org.apache.falcon.client.FalconCLIConstants.START_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.START_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.END_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.END_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.RUNID_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.CLUSTERS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.CLUSTERS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.SOURCECLUSTER_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.SOURCECLUSTER_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.FILE_PATH_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.FILE_PATH_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.ENTITY_NAME_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.ENTITY_NAME_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.COLO_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.COLO_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.RERUN_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.RUNID_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.LIFECYCLE_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.LIFECYCLE_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.FILTER_BY_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.FILTER_BY_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.ORDER_BY_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.ORDER_BY_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.SORT_ORDER_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.SORT_ORDER_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.OFFSET_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.OFFSET_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.FORCE_RERUN_FLAG;
+import static org.apache.falcon.client.FalconCLIConstants.FORCE_RERUN_FLAG_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.DO_AS_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.DO_AS_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION;
+import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.INSTANCE_TIME_OPT;
+import static org.apache.falcon.client.FalconCLIConstants.INSTANCE_TIME_OPT_DESCRIPTION;
+import static org.apache.falcon.client.FalconCLIConstants.ALL_ATTEMPTS;
+import static org.apache.falcon.client.FalconCLIConstants.ALL_ATTEMPTS_DESCRIPTION;
+import static org.apache.falcon.client.ValidationUtil.getLifeCycle;
 
 
 /**
@@ -247,7 +247,7 @@ public class FalconInstanceCLI extends FalconCLI {
             validateNotEmpty(colo, FalconCLIConstants.COLO_OPT);
             validateNotEmpty(start, FalconCLIConstants.START_OPT);
             validateNotEmpty(type, FalconCLIConstants.TYPE_OPT);
-            FalconClientUtil.validateEntityTypeForSummary(type);
+            ValidationUtil.validateEntityTypeForSummary(type);
             validateNotEmpty(entity, FalconCLIConstants.ENTITY_NAME_OPT);
             result = client.triage(type, entity, start, colo).toString();
         } else if (optionsList.contains(FalconCLIConstants.DEPENDENCY_OPT)) {
@@ -256,8 +256,8 @@ public class FalconInstanceCLI extends FalconCLI {
             result = ResponseHelper.getString(response);
 
         } else if (optionsList.contains(RUNNING_OPT)) {
-            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
-            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
+            ValidationUtil.validateOrderBy(orderBy, instanceAction);
+            ValidationUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getRunningInstances(type,
                     entity, colo, lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser));
         } else if (optionsList.contains(FalconCLIConstants.STATUS_OPT)
@@ -266,13 +266,13 @@ public class FalconInstanceCLI extends FalconCLI {
             if (optionsList.contains(ALL_ATTEMPTS)) {
                 allAttempts = true;
             }
-            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
-            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
+            ValidationUtil.validateOrderBy(orderBy, instanceAction);
+            ValidationUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getStatusOfInstances(type, entity, start, end, colo,
                     lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser, allAttempts));
         } else if (optionsList.contains(FalconCLIConstants.SUMMARY_OPT)) {
-            FalconClientUtil.validateOrderBy(orderBy, "summary");
-            FalconClientUtil.validateFilterBy(filterBy, "summary");
+            ValidationUtil.validateOrderBy(orderBy, "summary");
+            ValidationUtil.validateFilterBy(filterBy, "summary");
             result = ResponseHelper.getString(client.getSummaryOfInstances(type, entity, start, end, colo,
                     lifeCycles, filterBy, orderBy, sortOrder, doAsUser));
         } else if (optionsList.contains(KILL_OPT)) {
@@ -300,8 +300,8 @@ public class FalconInstanceCLI extends FalconCLI {
             result = ResponseHelper.getString(client.rerunInstances(type, entity, start, end, filePath, colo,
                     clusters, sourceClusters, lifeCycles, isForced, doAsUser));
         } else if (optionsList.contains(LOG_OPT)) {
-            FalconClientUtil.validateOrderBy(orderBy, instanceAction);
-            FalconClientUtil.validateFilterBy(filterBy, instanceAction);
+            ValidationUtil.validateOrderBy(orderBy, instanceAction);
+            ValidationUtil.validateFilterBy(filterBy, instanceAction);
             result = ResponseHelper.getString(client.getLogsOfInstances(type, entity, start, end, colo, runId,
                     lifeCycles, filterBy, orderBy, sortOrder, offset, numResults, doAsUser), runId);
         } else if (optionsList.contains(PARARMS_OPT)) {

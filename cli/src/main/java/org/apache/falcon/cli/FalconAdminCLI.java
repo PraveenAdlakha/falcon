@@ -23,14 +23,14 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
-import org.apache.falcon.FalconCLIConstants;
+import org.apache.falcon.client.FalconCLIConstants;
 import org.apache.falcon.client.FalconCLIException;
 import org.apache.falcon.client.FalconClient;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import static org.apache.falcon.FalconCLIConstants.STACK_OPTION;
+import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION;
 
 /**
  * Admin extension to Falcon Command Line Interface - wraps the RESTful API for admin commands.
