@@ -73,7 +73,7 @@ public class FalconProfileCommands extends BaseFalconCommands{
     @CliCommand(value = SET_PROFILE , help = SET_HELP)
     public String setProfile(@CliOption(key = {PROFILE}, mandatory = true, help = "key")
         @Nonnull final String key){
-        BaseFalconCommands.setClientProperty(FALCON_URL_PROPERTY, PROFILE);
+        setClientProperty(FALCON_URL_PROPERTY, PROFILE);
         return FALCON_URL_PROPERTY +"="+ PROFILE;
     }
 }

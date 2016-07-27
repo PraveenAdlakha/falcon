@@ -111,7 +111,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             final String colo,
             @CliOption(key = {START_OPT}, mandatory = false, help = START_OPT_DESCRIPTION) final String start
     ) {
-        return BaseFalconCommands.getFalconClient().triage(entityType.name(), entityName, start,
+        return getFalconClient().triage(entityType.name(), entityName, start,
                 getColo(colo)).toString();
     }
 
@@ -124,7 +124,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             final String colo,
             @CliOption(key = {START_OPT}, mandatory = false, help = START_OPT_DESCRIPTION) final String start
     ) {
-        return BaseFalconCommands.getFalconClient().getInstanceDependencies(entityType.name(), entityName,
+        return getFalconClient().getInstanceDependencies(entityType.name(), entityName,
                 start, getColo(colo))
                 .toString();
     }
@@ -149,7 +149,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
     ) {
         validateOrderBy(orderBy, INSTANCE_PREFIX);
         validateFilterBy(filterBy, INSTANCE_PREFIX);
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getRunningInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getRunningInstances(entityType.name(),
                 entityName, colo, getLifeCycle(lifeCycle), filterBy, orderBy, sortOrder, offset, numResults,
                 getDoAs()));
     }
@@ -179,7 +179,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
     ) {
         validateOrderBy(orderBy, INSTANCE_PREFIX);
         validateFilterBy(filterBy, INSTANCE_PREFIX);
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getStatusOfInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getStatusOfInstances(entityType.name(),
                 entityName, start, end, getColo(colo), getLifeCycle(lifeCycle), filterBy, orderBy, sortOrder,
                 offset, numResults, getDoAs(), allAttempts));
     }
@@ -204,7 +204,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
     ) {
         validateOrderBy(orderBy, INSTANCE_PREFIX);
         validateFilterBy(filterBy, INSTANCE_PREFIX);
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getSummaryOfInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getSummaryOfInstances(entityType.name(),
                 entityName, start, end, getColo(colo), getLifeCycle(lifeCycle), filterBy, orderBy,
                 sortOrder, getDoAs()));
     }
@@ -225,7 +225,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {LIFECYCLE_OPT}, mandatory = false, help = LIFECYCLE_OPT_DESCRIPTION)
             final String lifeCycle
     ) throws UnsupportedEncodingException {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().killInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().killInstances(entityType.name(),
                 entityName, start, end, getColo(colo), clusters, sourceClusters, getLifeCycle(lifeCycle), getDoAs()));
     }
 
@@ -245,7 +245,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {LIFECYCLE_OPT}, mandatory = false, help = LIFECYCLE_OPT_DESCRIPTION)
             final String lifeCycle
     ) throws UnsupportedEncodingException {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().suspendInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().suspendInstances(entityType.name(),
                 entityName, start, end, getColo(colo), clusters, sourceClusters, getLifeCycle(lifeCycle), getDoAs()));
     }
 
@@ -265,7 +265,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {LIFECYCLE_OPT}, mandatory = false, help = LIFECYCLE_OPT_DESCRIPTION)
             final String lifeCycle
     ) throws UnsupportedEncodingException {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().resumeInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().resumeInstances(entityType.name(),
                 entityName, start, end, getColo(colo), clusters, sourceClusters, getLifeCycle(lifeCycle), getDoAs()));
     }
 
@@ -289,7 +289,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {FORCE_RERUN_FLAG}, mandatory = false, specifiedDefaultValue = "true",
                     help = FORCE_RERUN_FLAG_DESCRIPTION) final Boolean forceRerun
     ) throws IOException {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().rerunInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().rerunInstances(entityType.name(),
                 entityName, start, end, filePath, getColo(colo), clusters, sourceClusters, getLifeCycle(lifeCycle),
                 forceRerun, getDoAs()));
     }
@@ -320,7 +320,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
     ) {
         validateOrderBy(orderBy, INSTANCE_PREFIX);
         validateFilterBy(filterBy, INSTANCE_PREFIX);
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getLogsOfInstances(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getLogsOfInstances(entityType.name(),
                 entityName, start, end, getColo(colo), runId, getLifeCycle(lifeCycle), filterBy, orderBy, sortOrder,
                 offset, numResults, getDoAs()));
     }
@@ -337,7 +337,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {LIFECYCLE_OPT}, mandatory = false, help = LIFECYCLE_OPT_DESCRIPTION)
             final String lifeCycle
     ) throws IOException {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getParamsOfInstance(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getParamsOfInstance(entityType.name(),
                 entityName, start, getColo(colo), getLifeCycle(lifeCycle), getDoAs()));
     }
 
@@ -352,7 +352,7 @@ public class FalconInstanceCommands extends BaseFalconCommands {
             @CliOption(key = {START_OPT}, mandatory = false, help = START_OPT_DESCRIPTION) final String start,
             @CliOption(key = {END_OPT}, mandatory = false, help = END_OPT_DESCRIPTION) final String end
     ) {
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getFeedInstanceListing(entityType.name(),
+        return ResponseHelper.getString(getFalconClient().getFeedInstanceListing(entityType.name(),
                 entityName, start, end, getColo(colo), getDoAs()));
     }
 }

@@ -39,8 +39,8 @@ public class FalconAdminCommands extends BaseFalconCommands {
     @CliCommand(value = {STATUS_OPT, ADMIN_COMMAND_PREFIX + STATUS_OPT}, help = STATUS_OPT_DESCRIPTION)
     public String status(
     ) {
-        int status = BaseFalconCommands.getFalconClient().getStatus(getDoAs());
-        String url = BaseFalconCommands.getClientProperties().getProperty(BaseFalconCommands.FALCON_URL_PROPERTY);
+        int status = getFalconClient().getStatus(getDoAs());
+        String url = getClientProperties().getProperty(BaseFalconCommands.FALCON_URL_PROPERTY);
         if (status != 200) {
             throw new RuntimeException("Falcon server is not fully operational (on "
                     + url + "). "
@@ -53,12 +53,12 @@ public class FalconAdminCommands extends BaseFalconCommands {
     @CliCommand(value = {ADMIN_COMMAND_PREFIX + STACK_OPTION}, help = STACK_OPTION_DESCRIPTION)
     public String stack(
     ) {
-        return BaseFalconCommands.getFalconClient().getThreadDump(getDoAs());
+        return getFalconClient().getThreadDump(getDoAs());
     }
 
     @CliCommand(value = {ADMIN_COMMAND_PREFIX + VERSION_OPT}, help = VERSION_OPT_DESCRIPTION)
     public String version(
     ) {
-        return BaseFalconCommands.getFalconClient().getVersion(getDoAs());
+        return getFalconClient().getVersion(getDoAs());
     }
 }

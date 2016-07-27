@@ -38,7 +38,7 @@ public class FalconConnectionCommands extends BaseFalconCommands {
         if (StringUtils.isBlank(key)) {
             return BaseFalconCommands.getClientProperties().toString();
         }
-        return BaseFalconCommands.getClientProperties().getProperty(key);
+        return getClientProperties().getProperty(key);
     }
 
     @CliCommand(value = "set", help = "set properties")
@@ -53,6 +53,6 @@ public class FalconConnectionCommands extends BaseFalconCommands {
         if (kvArray.length > 1) {
             value = kvArray[1];
         }
-        BaseFalconCommands.setClientProperty(key, value);
+        setClientProperty(key, value);
     }
 }

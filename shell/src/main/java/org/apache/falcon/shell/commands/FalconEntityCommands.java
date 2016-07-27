@@ -121,7 +121,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {START_OPT}, mandatory = true, help = START_OPT_DESCRIPTION) final String start,
             @CliOption(key = {END_OPT}, mandatory = false, help = END_OPT_DESCRIPTION) final String end
     ) {
-        SchedulableEntityInstanceResult response = BaseFalconCommands.getFalconClient()
+        SchedulableEntityInstanceResult response = getFalconClient()
                 .getFeedSlaMissPendingAlerts(entityType.name().toLowerCase(), entityName, start, end, getColo(colo));
         return ResponseHelper.getString(response);
     }
@@ -133,7 +133,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {FILE_PATH_OPT}, mandatory = true, help = FILE_PATH_OPT_DESCRIPTION) final File filePath
     ) {
 
-        return BaseFalconCommands.getFalconClient().submit(entityType.name().toLowerCase(), filePath.getPath(),
+        return getFalconClient().submit(entityType.name().toLowerCase(), filePath.getPath(),
                 getDoAs()).getMessage();
     }
 
@@ -143,7 +143,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {PATH_OPT}, mandatory = true, help = PATH_OPT_DESCRIPTION) final String feedInstancePath
     ) {
 
-        FeedLookupResult resp = BaseFalconCommands.getFalconClient().reverseLookUp(entityType.name().toLowerCase(),
+        FeedLookupResult resp = getFalconClient().reverseLookUp(entityType.name().toLowerCase(),
                 feedInstancePath, getDoAs());
         return ResponseHelper.getString(resp);
     }
@@ -158,7 +158,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {SKIPDRYRUN_OPT}, mandatory = false, help = SKIPDRYRUN_OPT_DESCRIPTION,
                     unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") boolean skipDryRun
     ) {
-        return BaseFalconCommands.getFalconClient()
+        return getFalconClient()
                 .update(entityType.name().toLowerCase(), entityName, filePath.getPath(), skipDryRun, getDoAs())
                 .getMessage();
     }
@@ -172,7 +172,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {PROPS_OPT}, mandatory = false, help = PROPS_OPT_DESCRIPTION) final String properties
     ) {
 
-        return BaseFalconCommands.getFalconClient()
+        return getFalconClient()
                 .submitAndSchedule(entityType.name().toLowerCase(), filePath.getPath(), skipDryRun, getDoAs(),
                         properties)
                 .getMessage();
@@ -186,7 +186,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
                     unspecifiedDefaultValue = "false", specifiedDefaultValue = "true") boolean skipDryRun
     ) {
 
-        return BaseFalconCommands.getFalconClient()
+        return getFalconClient()
                 .validate(entityType.name().toLowerCase(), filePath.getPath(), skipDryRun, getDoAs())
                 .getMessage();
     }
@@ -202,7 +202,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {PROPS_OPT}, mandatory = false, help = PROPS_OPT_DESCRIPTION) final String properties
     ) {
 
-        return BaseFalconCommands.getFalconClient().schedule(entityType, entityName, colo, skipDryRun, getDoAs(),
+        return getFalconClient().schedule(entityType, entityName, colo, skipDryRun, getDoAs(),
                 properties).getMessage();
     }
 
@@ -214,7 +214,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
                     unspecifiedDefaultValue = "*") final String colo
     ) {
 
-        return BaseFalconCommands.getFalconClient().suspend(entityType, entityName, colo, getDoAs()).getMessage();
+        return getFalconClient().suspend(entityType, entityName, colo, getDoAs()).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + RESUME_OPT, help = RESUME_OPT_DESCRIPTION)
@@ -225,7 +225,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
                     unspecifiedDefaultValue = "*") final String colo
     ) {
 
-        return BaseFalconCommands.getFalconClient().resume(entityType, entityName, colo, getDoAs()).getMessage();
+        return getFalconClient().resume(entityType, entityName, colo, getDoAs()).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + DELETE_OPT, help = DELETE_OPT_DESCRIPTION)
@@ -234,7 +234,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION) String entityName
     ) {
 
-        return BaseFalconCommands.getFalconClient().delete(entityType, entityName, getDoAs()).getMessage();
+        return getFalconClient().delete(entityType, entityName, getDoAs()).getMessage();
     }
 
     @CliCommand(value = ENTITY_COMMAND_PREFIX + STATUS_OPT, help = STATUS_OPT_DESCRIPTION)
@@ -247,7 +247,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
                     help = SHOWSCHEDULER_OPT_DESCRIPTION) final boolean showScheduler
     ) {
 
-        return BaseFalconCommands.getFalconClient().getStatus(entityType, entityName, colo, getDoAs(),
+        return getFalconClient().getStatus(entityType, entityName, colo, getDoAs(),
                 showScheduler).getMessage();
     }
 
@@ -257,7 +257,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION) String entityName
     ) {
 
-        return BaseFalconCommands.getFalconClient().getDefinition(entityType.name().toLowerCase(),
+        return getFalconClient().getDefinition(entityType.name().toLowerCase(),
                 entityName, getDoAs()).toString();
     }
 
@@ -267,7 +267,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
             @CliOption(key = {ENTITY_NAME_OPT}, mandatory = true, help = ENTITY_NAME_OPT_DESCRIPTION) String entityName
     ) {
 
-        return BaseFalconCommands.getFalconClient().getDependency(entityType.name().toLowerCase(), entityName,
+        return getFalconClient().getDependency(entityType.name().toLowerCase(), entityName,
                 getDoAs()).toString();
     }
 
@@ -293,7 +293,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
         FalconClientUtil.validateEntityFields(fields);
         FalconClientUtil.validateOrderBy(orderBy, ENTITY_PREFIX);
         FalconClientUtil.validateFilterBy(filterBy, ENTITY_PREFIX);
-        EntityList entityList = BaseFalconCommands.getFalconClient().getEntityList(entityType.name().toLowerCase(),
+        EntityList entityList = getFalconClient().getEntityList(entityType.name().toLowerCase(),
                 fields, nameSubsequence, tagKeywords, filterBy, filterTags, orderBy, sortOrder, offset,
                 numResults, getDoAs());
         return entityList != null ? entityList.toString() : "No entity of type (" + entityType + ") found.";
@@ -322,7 +322,7 @@ public class FalconEntityCommands extends BaseFalconCommands {
         FalconClientUtil.validateEntityFields(fields);
         FalconClientUtil.validateFilterBy(filterBy, ENTITY_PREFIX);
         FalconClientUtil.validateOrderBy(orderBy, ENTITY_PREFIX);
-        return ResponseHelper.getString(BaseFalconCommands.getFalconClient().getEntitySummary(
+        return ResponseHelper.getString(getFalconClient().getEntitySummary(
                 entityType.name().toLowerCase(), cluster, start, end, fields, filterBy, filterTags,
                 orderBy, sortOrder, offset, numResults, numInstances, getDoAs()));
     }
