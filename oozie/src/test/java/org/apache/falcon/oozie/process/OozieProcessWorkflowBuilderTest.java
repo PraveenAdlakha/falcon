@@ -89,6 +89,7 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
     private static final String CLUSTER_XML = "/config/cluster/cluster-0.1.xml";
     private static final String PIG_PROCESS_XML = "/config/process/pig-process-0.1.xml";
     private static final String SPARK_PROCESS_XML = "/config/process/spark-process-0.1.xml";
+    private static final String POST_PROCEES_XML = "/config/process/post-processing-process.xml";
 
     private String hdfsUrl;
     private FileSystem fs;
@@ -114,6 +115,10 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
         storeEntity(EntityType.FEED, "clicksummary", FEED_XML);
         storeEntity(EntityType.PROCESS, "clicksummary", PROCESS_XML);
         storeEntity(EntityType.PROCESS, "pig-process", PIG_PROCESS_XML);
+
+
+        storeEntity(EntityType.PROCESS, "post-process", POST_PROCEES_XML);
+
 
         ConfigurationStore store = ConfigurationStore.get();
         cluster = store.get(EntityType.CLUSTER, "corp");
@@ -783,6 +788,24 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
         assertAction(parentWorkflow, "succeeded-post-processing", true);
         assertAction(parentWorkflow, "failed-post-processing", true);
         assertAction(parentWorkflow, "user-action", false);
+    }
+
+    @Test
+    public void testPostProcessing() throws Exception {
+        StartupProperties.get().setProperty("falcon.postprocessing.enable","false");
+        Process process = ConfigurationStore.get().get(EntityType.PROCESS, "post-process");
+
+        WORKFLOWAPP parentWorkflow = initializeProcessMapper(process, "12", "360");
+        //String wfPath = coord.getAction().getWorkflow().getAppPath().replace("${nameNode}", "");
+        WORKFLOWAPP workflowapp = getWorkflowapp(fs, new Path("/falcon/staging/workflows/post-process/DEFAULT/", "workflow.xml"));
+
+        workflowapp.getDecisionOrForkOrJoin().contains("succeeded-post-processing")
+        System.out.println(parentWorkflow.getDecisionOrForkOrJoin().contains("succeeded-post-processing") + "******");
+        System.out.println(parentWorkflow.getDecisionOrForkOrJoin().contains("user-action"));
+        System.out.println(parentWorkflow);
+//        assertAction(parentWorkflow, "succeeded-post-processing", false);
+//        assertAction(parentWorkflow.getDecisionOrForkOrJoin().contains(), "user-action", true );
+
     }
 
     @AfterMethod
