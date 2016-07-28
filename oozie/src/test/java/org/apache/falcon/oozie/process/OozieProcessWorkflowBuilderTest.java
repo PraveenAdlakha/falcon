@@ -791,21 +791,35 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
     }
 
     @Test
-    public void testPostProcessing() throws Exception {
+    public void testPostProcessingProcess() throws Exception {
         StartupProperties.get().setProperty("falcon.postprocessing.enable","false");
         Process process = ConfigurationStore.get().get(EntityType.PROCESS, "post-process");
 
-        WORKFLOWAPP parentWorkflow = initializeProcessMapper(process, "12", "360");
-        //String wfPath = coord.getAction().getWorkflow().getAppPath().replace("${nameNode}", "");
-        WORKFLOWAPP workflowapp = getWorkflowapp(fs, new Path("/falcon/staging/workflows/post-process/DEFAULT/", "workflow.xml"));
+        OozieEntityBuilder builder = OozieEntityBuilder.get(process);
+        Path bundlePath = new Path("/falcon/staging/workflows", process.getName());
+        builder.build(cluster, bundlePath);
+        BUNDLEAPP bundle = getBundle(fs, bundlePath);
+        String coordPath = bundle.getCoordinator().get(0).getAppPath().replace("${nameNode}", "");
+        COORDINATORAPP coord = getCoordinator(fs, new Path(coordPath));
 
-        workflowapp.getDecisionOrForkOrJoin().contains("succeeded-post-processing")
-        System.out.println(parentWorkflow.getDecisionOrForkOrJoin().contains("succeeded-post-processing") + "******");
-        System.out.println(parentWorkflow.getDecisionOrForkOrJoin().contains("user-action"));
-        System.out.println(parentWorkflow);
-//        assertAction(parentWorkflow, "succeeded-post-processing", false);
-//        assertAction(parentWorkflow.getDecisionOrForkOrJoin().contains(), "user-action", true );
+        String wfPath = coord.getAction().getWorkflow().getAppPath().replace("${nameNode}", "");
+        WORKFLOWAPP workflowapp = getWorkflowapp(fs, new Path(wfPath, "workflow.xml"));
 
+        Boolean userAction = false;
+        Boolean postProcessing = true;
+
+        for(Object action : workflowapp.getDecisionOrForkOrJoin()){
+            if(action instanceof ACTION && ((ACTION)action).getName().equals("user-action")){
+                userAction = true;
+            }
+            if(action instanceof ACTION && ((ACTION)action).getName().contains("post")){
+                postProcessing = true;
+            }
+
+        }
+        assertTrue(userAction);
+        assertTrue(postProcessing);
+   //     StartupProperties.get().setProperty("falcon.postprocessing.enable","true");
     }
 
     @AfterMethod
