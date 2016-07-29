@@ -37,33 +37,25 @@ import java.util.concurrent.ExecutorService;
 /**
  * Moves Falcon logs.
  */
-public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecutionListener  {
+public class LogMoverService implements WorkflowExecutionListener  {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogMoverService.class);
 
     public static final String ENABLE_POSTPROCESSING = StartupProperties.get().
             getProperty("falcon.postprocessing.enable");
 
-    public LogMoverService(int corePoolSize, int maximumPoolSize,
-                           long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue){
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
-    }
-
-    private BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(50);
+    private BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<>(50);
+    private ExecutorService executorService = new ThreadPoolExecutor(20, getThreadCount(), 120,
+            TimeUnit.SECONDS, blockingQueue);
 
     public int getThreadCount() {
         try{
-            threadCount = Integer.parseInt(StartupProperties.get().getProperty("falcon.logMoveService.threadCount"));
+            return Integer.parseInt(StartupProperties.get().getProperty("falcon.logMoveService.threadCount"));
         } catch (NumberFormatException  e){
             LOG.error("Exception in LogMoverService", e);
             return 50;
         }
-        return threadCount;
     }
-    private int threadCount;
-
-    private ExecutorService executorService = new ThreadPoolExecutor(20, getThreadCount(), 120,
-            TimeUnit.SECONDS, blockingQueue);
 
     @Override
     public void onSuccess(WorkflowExecutionContext context) throws FalconException{
@@ -96,7 +88,7 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
         }
         while(0<blockingQueue.remainingCapacity()){
             try {
-                LOG.info("sleeing, no capacity in thredpool....");
+                LOG.info("Sleeing, no capacity in threadpool....");
                 TimeUnit.MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
