@@ -90,6 +90,7 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
     private static final String PIG_PROCESS_XML = "/config/process/pig-process-0.1.xml";
     private static final String SPARK_PROCESS_XML = "/config/process/spark-process-0.1.xml";
     private static final String POST_PROCEES_XML = "/config/process/post-processing-process.xml";
+    private static final String FEED_POST_XML = "/config/feed/feed-post-processing-0.1.xml";
 
     private String hdfsUrl;
     private FileSystem fs;
@@ -115,8 +116,6 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
         storeEntity(EntityType.FEED, "clicksummary", FEED_XML);
         storeEntity(EntityType.PROCESS, "clicksummary", PROCESS_XML);
         storeEntity(EntityType.PROCESS, "pig-process", PIG_PROCESS_XML);
-
-
         storeEntity(EntityType.PROCESS, "post-process", POST_PROCEES_XML);
 
 
@@ -809,7 +808,7 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
         Boolean postProcessing = true;
 
         for(Object action : workflowapp.getDecisionOrForkOrJoin()){
-            if(action instanceof ACTION && ((ACTION)action).getName().equals("user-action")){
+            if (action instanceof ACTION && ((ACTION)action).getName().equals("user-action")){
                 userAction = true;
             }
             if(action instanceof ACTION && ((ACTION)action).getName().contains("post")){
@@ -819,7 +818,7 @@ public class OozieProcessWorkflowBuilderTest extends AbstractTestBase {
         }
         assertTrue(userAction);
         assertTrue(postProcessing);
-   //     StartupProperties.get().setProperty("falcon.postprocessing.enable","true");
+        StartupProperties.get().setProperty("falcon.postprocessing.enable","true");
     }
 
     @AfterMethod

@@ -20,7 +20,6 @@ package org.apache.falcon.service;
 
 import org.apache.falcon.FalconException;
 import org.apache.falcon.logging.JobLogMover;
-import org.apache.falcon.util.RuntimeProperties;
 import org.apache.falcon.util.StartupProperties;
 import org.apache.falcon.workflow.WorkflowExecutionContext;
 import org.apache.falcon.workflow.WorkflowExecutionListener;
@@ -53,10 +52,10 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
 
     public int getThreadCount() {
         try{
-            threadCount = Integer.parseInt(RuntimeProperties.get().getProperty("falcon.logMoveService.threadCount"));
-        }catch (NumberFormatException  e){
-           LOG.error("Exception in LogMoverService", e);
-           return 50;
+            threadCount = Integer.parseInt(StartupProperties.get().getProperty("falcon.logMoveService.threadCount"));
+        } catch (NumberFormatException  e){
+            LOG.error("Exception in LogMoverService", e);
+            return 50;
         }
         return threadCount;
     }
@@ -65,7 +64,8 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
 
 
 
-    ExecutorService executorService = new ThreadPoolExecutor(20,getThreadCount(),120, TimeUnit.SECONDS,blockingQueue);
+    private ExecutorService executorService = new ThreadPoolExecutor(20, getThreadCount(), 120,
+            TimeUnit.SECONDS, blockingQueue);
 
 
     @Override
