@@ -311,7 +311,6 @@ public class OozieFeedWorkflowBuilderTest extends AbstractTestBase {
         }
         assertTrue(userAction);
         assertTrue(postProcessing);
-        StartupProperties.get().setProperty("falcon.postprocessing.enable", "true");
     }
 
     @Test

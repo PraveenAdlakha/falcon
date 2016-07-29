@@ -27,7 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.*;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+
 
 /**
  * Moves Falcon logs.
@@ -55,12 +60,11 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
         }
         return threadCount;
     }
-
     private int threadCount;
 
     private ExecutorService executorService = new ThreadPoolExecutor(20, getThreadCount(), 120,
             TimeUnit.SECONDS, blockingQueue);
-    
+
     @Override
     public void onSuccess(WorkflowExecutionContext context) throws FalconException{
         onEnd(context);
@@ -102,10 +106,9 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
     }
 
 
-    class LogMover implements Runnable {
-
-        private WorkflowExecutionContext context ;
-        public LogMover (@Nonnull WorkflowExecutionContext context){
+    private static class LogMover implements Runnable {
+        private WorkflowExecutionContext context;
+        public LogMover(@Nonnull WorkflowExecutionContext context){
             this.context = context;
         }
         @Override
