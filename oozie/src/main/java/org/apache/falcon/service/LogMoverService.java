@@ -27,11 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
 
 /**
  * Moves Falcon logs.
@@ -62,12 +58,9 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
 
     private int threadCount;
 
-
-
     private ExecutorService executorService = new ThreadPoolExecutor(20, getThreadCount(), 120,
             TimeUnit.SECONDS, blockingQueue);
-
-
+    
     @Override
     public void onSuccess(WorkflowExecutionContext context) throws FalconException{
         onEnd(context);
@@ -94,9 +87,18 @@ public class LogMoverService extends ThreadPoolExecutor implements WorkflowExecu
     }
 
     private void onEnd(WorkflowExecutionContext context){
-        if (!Boolean.parseBoolean(ENABLE_POSTPROCESSING)){
-            executorService.execute(new LogMover(context));
+        if (Boolean.parseBoolean(ENABLE_POSTPROCESSING)) {
+            return;
         }
+        while(0<blockingQueue.remainingCapacity()){
+            try {
+                LOG.info("sleeing, no capacity in thredpool....");
+                TimeUnit.MILLISECONDS.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        executorService.execute(new LogMover(context));
     }
 
 
