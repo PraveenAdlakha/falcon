@@ -30,12 +30,11 @@ import org.apache.falcon.client.FalconClient;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION;
 
 /**
  * Admin extension to Falcon Command Line Interface - wraps the RESTful API for admin commands.
  */
-public class FalconAdminCLI extends FalconCLI {
+public class FalconAdminCLI extends FalconCLI implements FalconCLIConstants {
 
 
 

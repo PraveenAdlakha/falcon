@@ -39,83 +39,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.apache.falcon.client.FalconCLIConstants.SUBMIT_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.UPDATE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SCHEDULE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SUSPEND_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.RESUME_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DELETE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SUBMIT_AND_SCHEDULE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.VALIDATE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SUBMIT_AND_SCHEDULE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VALIDATE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEFINITION_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEPENDENCY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.LIST_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.LOOKUP_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SLA_MISS_ALERT_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SUMMARY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TOUCH_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.UPDATE_CLUSTER_DEPENDENTS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FILE_PATH_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FILE_PATH_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.ENTITY_NAME_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.ENTITY_NAME_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.START_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.START_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.END_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.END_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.COLO_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.COLO_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.CLUSTER_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FIELDS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FIELDS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.FILTER_BY_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FILTER_BY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TAGS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.TAGS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NAMESEQ_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.CLUSTER_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TAGKEYS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.TAGKEYS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.ORDER_BY_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.ORDER_BY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SORT_ORDER_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.SORT_ORDER_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.OFFSET_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.OFFSET_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_INSTANCES_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_INSTANCES_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.PATH_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.PATH_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SKIPDRYRUN_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.SKIPDRYRUN_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DO_AS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.DO_AS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.PROPS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.PROPS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.SHOWSCHEDULER_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.SHOWSCHEDULER_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NAMESEQ_OPT_DESCRIPTION;
-
-
-
-
-
-
 /**
  * Entity extension to Falcon Command Line Interface - wraps the RESTful API for entities.
  */
-public class FalconEntityCLI extends FalconCLI {
+public class FalconEntityCLI extends FalconCLI implements FalconCLIConstants{
 
     public FalconEntityCLI() throws Exception {
         super();

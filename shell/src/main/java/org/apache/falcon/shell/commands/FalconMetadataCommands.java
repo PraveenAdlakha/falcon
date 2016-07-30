@@ -19,6 +19,7 @@
 package org.apache.falcon.shell.commands;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.falcon.client.FalconCLIConstants;
 import org.apache.falcon.entity.v0.EntityType;
 import org.apache.falcon.metadata.RelationshipType;
 import org.springframework.shell.core.annotation.CliCommand;
@@ -72,7 +73,7 @@ import static org.apache.falcon.client.ValidationUtil.validateVerticesCommand;
  * Metadata commands.
  */
 @Component
-public class FalconMetadataCommands extends BaseFalconCommands {
+public class FalconMetadataCommands extends BaseFalconCommands implements FalconCLIConstants {
     public static final String METADATA_PREFIX = "metadata";
     public static final String METADATA_COMMAND_PREFIX = METADATA_PREFIX + " ";
 

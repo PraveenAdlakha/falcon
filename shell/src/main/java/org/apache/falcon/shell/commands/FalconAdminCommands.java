@@ -18,21 +18,15 @@
 
 package org.apache.falcon.shell.commands;
 
+import org.apache.falcon.client.FalconCLIConstants;
 import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.stereotype.Component;
-
-import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION;
-import static org.apache.falcon.client.FalconCLIConstants.STACK_OPTION_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.STATUS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VERSION_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.VERSION_OPT_DESCRIPTION;
 
 /**
  * Admin commands.
  */
 @Component
-public class FalconAdminCommands extends BaseFalconCommands {
+public class FalconAdminCommands extends BaseFalconCommands implements FalconCLIConstants {
     public static final String ADMIN_PREFIX = "admin";
     public static final String ADMIN_COMMAND_PREFIX = ADMIN_PREFIX + " ";
 

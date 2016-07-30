@@ -34,50 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.apache.falcon.client.FalconCLIConstants.DISCOVERY_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.DISCOVERY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.LINEAGE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.LINEAGE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.PIPELINE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.PIPELINE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.LIST_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.LIST_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.RELATIONS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.RELATIONS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION;
-import static org.apache.falcon.client.FalconCLIConstants.URL_OPTION_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.TYPE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NAME_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.NAME_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DEBUG_OPTION_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DIRECTION_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.DIRECTION_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.VALUE_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VALUE_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.KEY_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.KEY_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.ID_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.ID_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.EDGE_CMD_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.EDGE_CMD;
-import static org.apache.falcon.client.FalconCLIConstants.VERTEX_EDGES_CMD_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VERTEX_EDGES_CMD;
-import static org.apache.falcon.client.FalconCLIConstants.VERTICES_CMD_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VERTICES_CMD;
-import static org.apache.falcon.client.FalconCLIConstants.VERTEX_CMD_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.VERTEX_CMD;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.NUM_RESULTS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.PROCESS_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.PROCESS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.FEED_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.FEED_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.CLUSTER_OPT_DESCRIPTION;
-import static org.apache.falcon.client.FalconCLIConstants.CLUSTER_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.DO_AS_OPT;
-import static org.apache.falcon.client.FalconCLIConstants.DO_AS_DESCRIPTION;
 import static org.apache.falcon.client.ValidationUtil.validateDimensionName;
 import static org.apache.falcon.client.ValidationUtil.validateDimensionType;
 import static org.apache.falcon.client.ValidationUtil.validateId;
@@ -90,7 +46,7 @@ import static org.apache.falcon.client.ValidationUtil.validateVerticesCommand;
 /**
  * Metadata extension to Falcon Command Line Interface - wraps the RESTful API for Metadata.
  */
-public class FalconMetadataCLI extends FalconCLI {
+public class FalconMetadataCLI extends FalconCLI implements FalconCLIConstants {
 
     public static final AtomicReference<PrintStream> OUT = new AtomicReference<PrintStream>(System.out);
 

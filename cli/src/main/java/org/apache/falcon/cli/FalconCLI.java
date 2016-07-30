@@ -34,12 +34,11 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-import static org.apache.falcon.client.FalconCLIConstants.FALCON_URL;
 
 /**
  * Falcon Command Line Interface - wraps the RESTful API.
  */
-public class FalconCLI {
+public class FalconCLI implements FalconCLIConstants {
 
     public static final AtomicReference<PrintStream> ERR = new AtomicReference<PrintStream>(System.err);
     public static final AtomicReference<PrintStream> OUT = new AtomicReference<PrintStream>(System.out);
