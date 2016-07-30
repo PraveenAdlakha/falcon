@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-package org.apache.falcon.cli.commands;
+package org.apache.falcon.shell.commands;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.falcon.client.AbstractFalconClient;
+import org.apache.falcon.client.FalconCLIConstants;
 import org.apache.falcon.client.FalconCLIException;
 import org.apache.falcon.client.FalconClient;
 import org.springframework.shell.core.ExecutionProcessor;
@@ -30,23 +31,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static org.apache.falcon.cli.FalconCLI.CURRENT_COLO;
-import static org.apache.falcon.cli.FalconCLI.FALCON_URL;
 
 /**
  * Common code for all falcon command classes.
  */
-public class BaseFalconCommands implements ExecutionProcessor {
-    private static final String FALCON_URL_PROPERTY = "falcon.url";
+public class BaseFalconCommands implements ExecutionProcessor, FalconCLIConstants {
+    protected static final String FALCON_URL_PROPERTY = "falcon.url";
     private static final String DO_AS = "DO_AS";
     private static final String DO_AS_PROPERTY = "do.as";
-    private static final String CLIENT_PROPERTIES = "/client.properties";
+    private static final String CLIENT_PROPERTIES = "/shell.properties";
     protected static final String FALCON_URL_ABSENT = "Failed to get falcon url from environment or client properties";
     private static Properties clientProperties;
     private static Properties backupProperties = new Properties();
     private static AbstractFalconClient client;
 
-    protected static Properties getClientProperties() {
+    static {
+        clientProperties = getClientProperties();
+    }
+
+
+    public static Properties getClientProperties() {
         if (clientProperties == null) {
             InputStream inputStream = null;
             Properties prop = new Properties(System.getProperties());
